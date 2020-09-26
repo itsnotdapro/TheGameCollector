@@ -1,0 +1,22 @@
+public enum Platform {
+    PC,
+    PS,
+    PS2,
+    PS3,
+    PS4,
+    PS5,
+    PSP,
+    VITA,
+    XBOX,
+    XBOX360,
+    XBOXONE,
+    XBOXSERIESX,
+    N64,
+    GC,
+    WII,
+    WIIU,
+    SWITCH,
+    GBA,
+    DS,
+    THREEDS;
+}
