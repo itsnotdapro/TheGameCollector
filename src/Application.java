@@ -3,10 +3,10 @@ import java.awt.*;
 import java.util.Date;
 
 public class Application {
-    private JPanel panel;
+    private JPanel panel = new JPanel();
 
     public Application() {
-
+        panel.add(new GamePanel(new Game("SuperHot", 30.00f, Platform.PC, new Date())));
     }
 
     public static void main(String[] args) {
@@ -16,7 +16,7 @@ public class Application {
         JFrame frame = new JFrame("Application");
         frame.setContentPane(new Application().panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(800, 600));
+        frame.setPreferredSize(new Dimension((int)(Toolkit.getDefaultToolkit().getScreenSize().width / 1.2), (int)(Toolkit.getDefaultToolkit().getScreenSize().height / 1.2)));
         frame.pack();
         frame.setVisible(true);
     }
