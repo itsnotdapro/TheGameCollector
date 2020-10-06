@@ -5,7 +5,9 @@ This project will be a games collection catalouge. It will allow you to store, e
 
 The software will use the Chicken Coop API to help with populating fields, as information such as release year, platform, and images, as it can pull this information from the MetaCritic database from a game's title.
 
-The UI will be powered by Java's Swing framework, as it is the easiest way to communcate with a Java backend. As one of the requirements of the project is console I/O, there will be a Java console UI built in, but hidden unless enabled through console arguments. Any subsequent builds of this project after assessment grading will be built on some type of web framework, most likely Electron, with either a Node.js or C# backend. 
+The UI will be powered by Java's Swing framework, as it is the easiest way to communcate with a Java backend. As one of the requirements of the project is console I/O, there will be a Java console UI built in, but hidden unless enabled through console arguments.
+
+As this project is a university assignment, and so all code must be written by me, there are some functions that would normally be taken from libraries, such as a JSON parser, that will have to be hand developed instead
 
 ## Project Structure (UML)
 

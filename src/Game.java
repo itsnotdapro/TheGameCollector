@@ -1,7 +1,8 @@
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 
-public class Game implements Serializable {
+public class Game extends InfoRetrieval implements Serializable {
     private String title;
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
@@ -18,12 +19,28 @@ public class Game implements Serializable {
     public Date getRelease() { return release; }
     public void setRelease(Date release) { this.release = release; }
 
-    public Game(String title, float price, Platform platform, Date release) {
+    public HashMap<String, Object> getAPIData() { return APIData; }
+
+    private HashMap<String, Object> APIResults;
+    public HashMap<String, Object> getAPIResults() { return APIResults; }
+    public void setAPIResults(HashMap<String, Object> APIResults) { this.APIResults = APIResults; }
+
+    public Game(String title, float price, Platform platform, Date release, boolean getData) {
         setTitle(title);
         setPrice(price);
         setPlatform(platform);
         setRelease(release);
+
+        if (getData) {
+            url = "https://rapidapi.p.rapidapi.com/games/" + title.replace(" ", "%20") + "?platform:" + platform;
+            APIData = parseInfo(this.getInfo());
+            APIResults = (HashMap<String, Object>)APIData.get("results");
+            System.out.println(url);
+        }
     }
+
+    @Override
+    public HashMap<String, Object> parseInfo(String info) { return Json.parse(info); }
 
     @Override
     public String toString() { return title + " | $" + price + "| For: " + platform + " | Released on: " + release.getDate(); }

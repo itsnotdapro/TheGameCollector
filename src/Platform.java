@@ -1,7 +1,7 @@
 public enum Platform {
     PC,
-    PS,
-    PS2,
+    PS ("PlayStation"),
+    PS2 ("PlayStation 2"),
     PS3,
     PS4,
     PS5,
@@ -19,4 +19,18 @@ public enum Platform {
     GBA,
     DS,
     THREEDS;
+
+    private String name;
+
+    Platform(String name) {
+        this.name = name;
+    }
+
+    Platform() {}
+
+    @Override
+    public String toString() {
+        if (name != null) { return name; }
+        else { return super.toString(); }
+    }
 }
