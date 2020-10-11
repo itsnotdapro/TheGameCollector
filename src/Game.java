@@ -35,8 +35,19 @@ public class Game extends InfoRetrieval implements Serializable {
             url = "https://rapidapi.p.rapidapi.com/games/" + title.replace(" ", "%20") + "?platform:" + platform;
             APIData = parseInfo(this.getInfo());
             APIResults = (HashMap<String, Object>)APIData.get("results");
-            System.out.println(url);
         }
+    }
+
+    /** Constructor if the game's info does not need to be retrieved
+    * @param title
+    * @param price
+    * @param platform
+    * @param release */
+    public Game(String title, float price, Platform platform, Date release) {
+        setTitle(title);
+        setPrice(price);
+        setPlatform(platform);
+        setRelease(release);
     }
 
     @Override

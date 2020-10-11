@@ -13,29 +13,17 @@ public class GamePanel extends JPanel {
     private JLabel gamePrice = new JLabel();
     private JLabel gamePlatform = new JLabel();
 
-    public GamePanel(Game game) throws IOException {
+    public GamePanel(Game game) {
         this.game = game;
         gameTitle.setText(game.getTitle());
         gameTitle.setFont(new Font("Tahoma", Font.BOLD, 20));
         gamePrice.setText("Price: $" + game.getPrice());
         gamePlatform.setText("Platform: " + game.getPlatform());
 
-        // TODO: Have this image getter check for original images, plus in a different function & possibly thread
-        URL url = new URL((String)game.getAPIResults().get("image"));
-        InputStream inputStream = url.openStream();
-        OutputStream outputStream = new FileOutputStream(new File("data/img/" + game.getTitle().replace(":", "-") + ".jpg"));
-
-        byte[] bytes = new byte[2048];
-        int length;
-
-        while ((length = inputStream.read(bytes)) != -1) {
-            outputStream.write(bytes, 0, length);
-        }
-
-        inputStream.close();
-        outputStream.close();
-
-        BufferedImage image = ImageIO.read(new File("data/img/" + game.getTitle().replace(":", "-") + ".jpg"));
+        BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+        try { image = getImage(); }
+        catch (IOException e) { e.printStackTrace(); }
+        finally {  }
         ImageIcon art = new ImageIcon(image);
         JLabel boxArtLabel = new JLabel(art);
 
@@ -46,6 +34,28 @@ public class GamePanel extends JPanel {
         details.add(gamePrice);
         details.add(gamePlatform);
         this.add(details);
+    }
+
+    public BufferedImage getImage() throws IOException {
+        File imageFile = new File("data/img/" + game.getTitle().replace(":", "-") + ".jpg");
+        // Get the image from a HTTP request if it does not exist
+        if (!imageFile.exists()) {
+            URL url = new URL((String) game.getAPIResults().get("image"));
+            InputStream inputStream = url.openStream();
+            OutputStream outputStream = new FileOutputStream(new File("data/img/" + game.getTitle().replace(":", "-") + ".jpg"));
+
+            byte[] bytes = new byte[2048];
+            int length;
+
+            while ((length = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, length);
+            }
+
+            inputStream.close();
+            outputStream.close();
+        }
+
+        return ImageIO.read(imageFile);
     }
 
     /** Method to resize a BufferedImage

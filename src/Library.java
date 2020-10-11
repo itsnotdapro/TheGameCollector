@@ -1,9 +1,9 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
-public class Library implements Serializable {
-    public List<Game> array = new ArrayList<Game>();
+public class Library implements Serializable, Iterable<Game> {
+    private ArrayList<Game> array = new ArrayList<Game>();
     private final String path;
 
     public Library(String path) {
@@ -14,17 +14,16 @@ public class Library implements Serializable {
         array.add(addition);
     }
 
-    public void write() {
-        try {
-            FileOutputStream out = new FileOutputStream(path);
-            ObjectOutputStream objOut = new ObjectOutputStream(out);
-            objOut.writeObject(this);
-            objOut.close();
-            out.close();
-        } catch (IOException e) { e.printStackTrace(); }
+    public void write() throws IOException {
+        FileOutputStream out = new FileOutputStream(path);
+        ObjectOutputStream objOut = new ObjectOutputStream(out);
+        objOut.writeObject(this);
+        objOut.close();
+        out.close();
     }
 
-    public void read() {
+
+    public void read() throws IOException {
         try {
             FileInputStream in = new FileInputStream(path);
             ObjectInputStream objIn = new ObjectInputStream(in);
@@ -32,7 +31,18 @@ public class Library implements Serializable {
             array = db.array;
             objIn.close();
             in.close();
+        } catch (FileNotFoundException e) { new File(path).createNewFile();
+        } catch (EOFException e) { // catch this lmao
         } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public void clear() {
+        try { new File(path).createNewFile(); }
+        catch (IOException e) { e.printStackTrace(); }
+    }
+
+    public int size() {
+        return array.size();
     }
 
     @Override
@@ -43,4 +53,7 @@ public class Library implements Serializable {
         }
         return out;
     }
+
+    @Override
+    public Iterator<Game> iterator() { return array.iterator(); }
 }
