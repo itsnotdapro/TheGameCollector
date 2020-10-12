@@ -1,3 +1,5 @@
+package Library;
+
 public enum Platform {
     PC,
     PS ("PlayStation"),
