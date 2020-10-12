@@ -1,18 +1,22 @@
 package Data;
 
 public enum Month {
-	JANUARY,
-	FEBURARY,
-	MARCH,
-	APRIL,
-	MAY,
-	JUNE,
-	JULY,
-	AUGUST,
-	SEPTEMBER,
-	OCTOBER,
-	NOVERMBER,
-	DECEMBER;
+	JANUARY (1),
+	FEBURARY (2),
+	MARCH (3),
+	APRIL (4),
+	MAY (5),
+	JUNE (6),
+	JULY (7),
+	AUGUST (8),
+	SEPTEMBER (9),
+	OCTOBER (10),
+	NOVERMBER (11),
+	DECEMBER (12);
+	
+	private int value;
+	private Month(int value) { this.value = value; }
+	public int getValue() { return value; }
 	
 	@Override
 	public String toString() {

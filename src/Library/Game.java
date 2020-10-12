@@ -1,8 +1,11 @@
 package Library;
 
 import Data.Json;
+import Exceptions.Log;
 import Data.InfoRetrieval;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,6 +28,10 @@ public class Game extends InfoRetrieval implements Serializable {
     private boolean physical;
     public boolean getPhysical() { return physical; }
     public void setPhysical(boolean physical) { this.physical = physical; } 
+    
+    private Date purchased;
+    public Date getPurchase() { return purchased; }
+    public void setPurchase(Date purchased) { this.purchased = purchased; }
 
     private Date release;
     public Date getRelease() { return release; }
@@ -38,33 +45,55 @@ public class Game extends InfoRetrieval implements Serializable {
     public ArrayList<String> getGenres() { return this.genres; }
     public void setGenres(ArrayList<String> genres) { this.genres = genres; }
 
-    private Json APIResults;
+    public Json APIResults;
     public Object getResult(String key) { return APIResults.get(key); }
     public boolean hasData() { return (APIResults == null) ? false : true; }
 
-    public Game(String title, float price, Platform platform, Date release, int rating) {
+    public Game(String title, float price, Platform platform, Date purchase, int rating, boolean physical) {
         setTitle(title);
         setPrice(price);
         setPlatform(platform);
-        setRelease(release);
+        setPurchase(purchase);
         setRating(rating);
+        setPhysical(physical);
 
     }
     
+ 
+    
     public void getData() { getData(new JProgressBar()); }
     public void getData(JProgressBar bar) {    
-        url = "https://rapidapi.p.rapidapi.com/games/" + title.replace(" ", "%20") + "?platform:" + platform;
+    	String urlTitle = title.replace(" ", "%20");
+    	urlTitle = urlTitle.replace("&", "%26");
+        url = "https://rapidapi.p.rapidapi.com/games/" + urlTitle + (getPlatform() == Platform.PC ? "" :  ("?platform=" + platform.getApiName()));
+        System.out.println(url);
         try {
         	APIData = new Json(this.getInfo(bar));
         	APIResults = new Json((HashMap<String, Object>)APIData.get("results")); 
-        	
+        	if (!APIResults.isEmpty()) {
+        		setTitle((String)APIResults.get("title"));
+        		try {
+        			Date release;
+					release = new SimpleDateFormat("MMM dd yyyy").parse((String)APIResults.get("releaseDate"));
+					setRelease(release);
+				} catch (ParseException e) { 
+					setRelease(purchased);
+					new Log(e.getMessage());
+					System.err.println("Unable to parse release date");
+				}
+        		setGenres((ArrayList<String>)APIResults.get("genres"));
+        	} else {
+        		APIResults = null;
+        	}
         } catch (NullPointerException e) {
         	APIResults = null;
         	bar.setValue(100);
         }
     }
+    
+    
 
 
     @Override
-    public String toString() { return title + " | $" + price + "| For: " + platform + " | Released on: " + release.getDate(); }
+    public String toString() { return title + " | $" + price + "| For: " + platform + " | Released on: " + release; }
 }

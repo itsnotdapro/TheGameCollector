@@ -8,6 +8,8 @@ import java.util.HashMap;
 
 import javax.swing.JProgressBar;
 
+import Exceptions.Log;
+
 public abstract class InfoRetrieval {
     protected String url;
     protected Json APIData;
@@ -38,7 +40,7 @@ public abstract class InfoRetrieval {
                 return response; 
             }
 
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { new Log(e.getMessage()); }
 
         return null;
     }

@@ -2,7 +2,10 @@ package Library;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+
+import Exceptions.Log;
 
 public class Library implements Serializable, Iterable<Game> {
     private ArrayList<Game> array = new ArrayList<Game>();
@@ -12,9 +15,8 @@ public class Library implements Serializable, Iterable<Game> {
         this.path = path;
     }
 
-    public void add(Game addition) {
-        array.add(addition);
-    }
+    public void add(Game addition) { array.add(addition); }
+    public void remove(Game reduction) { array.remove(reduction); }
 
     public void write() throws IOException {
         FileOutputStream out = new FileOutputStream(path);
@@ -33,19 +35,21 @@ public class Library implements Serializable, Iterable<Game> {
             array = db.array;
             objIn.close();
             in.close();
-        } catch (FileNotFoundException e) { new File(path).createNewFile();
+        } catch (FileNotFoundException e) { clear();
         } catch (EOFException e) { // catch this lmao
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) { new Log(e.getMessage()); }
     }
 
     public void clear() {
         try { new File(path).createNewFile(); }
         catch (IOException e) { e.printStackTrace(); }
     }
-
-    public int size() {
-        return array.size();
+    
+    public void sort(SortingMethod method) {
+    	Collections.sort(array, Sort.get(method));
     }
+
+    public int size() {return array.size();}
 
     @Override
     public String toString() {

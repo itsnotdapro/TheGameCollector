@@ -1,22 +1,43 @@
 package Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Json {
+public class Json implements Serializable {
 	private HashMap<String, Object> data;
 	
-	public Json(String jsonString) {
-		data = parse(jsonString);
+	
+	// Constructors
+	public Json(String jsonString) { data = parse(jsonString);}
+	public Json(HashMap<String, Object> data) { this.data = data; }
+	
+	// Methods
+	public Object get(String key) { return data.get(key); }
+	public boolean isEmpty() { return data.isEmpty(); }
+	
+	public static ArrayList<String> removeDuplicates(ArrayList<String> array) {
+		ArrayList<String> newArray = new ArrayList<String>();
+		for (String item : array) {
+			if (!newArray.contains(item)) {
+				newArray.add(item);
+			}
+		}
+		return newArray;
 	}
 	
-	public Json(HashMap<String, Object> data) {
-		this.data = data;
+	public static HashMap<String, Object> removeDuplicates(HashMap<String, Object> map) {
+		HashMap<String, Object> newMap = new HashMap<String, Object>();
+		for (String key : map.keySet()) {
+			if (newMap.containsKey(key) && newMap.containsValue(map.get(key))) {
+				newMap.put(key, map.get(key));
+			}
+		}
+		return newMap;
 	}
 	
-	public Object get(String key) {
-		return data.get(key);
-	}
+	@Override
+	public String toString() { return data.toString(); }
 	
 	/** Returns the formatted HashMap of a json string, based on the return results of the API data. Will only parse for the given data of the API 
 	* @param jsonString the string of json data to be parsed
@@ -122,8 +143,8 @@ public class Json {
                         continue;
                     } else if (c == ']') {
                         parsingKeyResult = true;
-                        genres.add(resultValue);
-                        result.put("genres", genres);
+     
+                        result.put("genres", removeDuplicates(genres));
                         resultValue = "";
                         resultKey = "";
                         continue;
