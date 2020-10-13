@@ -11,7 +11,7 @@ public enum Month {
 	AUGUST (8),
 	SEPTEMBER (9),
 	OCTOBER (10),
-	NOVERMBER (11),
+	NOVEMBER (11),
 	DECEMBER (12);
 	
 	private int value;

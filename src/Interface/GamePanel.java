@@ -5,6 +5,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
 import Exceptions.Log;
+import Interface.Listeners.SelectionListener;
 import Library.Game;
 
 import java.awt.*;

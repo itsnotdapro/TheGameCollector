@@ -1,4 +1,4 @@
-package Interface;
+package Interface.Listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,7 +7,7 @@ import javax.swing.JRadioButton;
 
 public class RatingListener implements ActionListener {
 	private JRadioButton rate1, rate2, rate3, rate4, rate5, rate6, rate7, rate8, rate9, rate10;
-	private int ratingValue = 0;
+	private int ratingValue = 1;
 	
 	public void setValue(int value) { ratingValue = value; }
 	public int getValue() { return ratingValue; }
