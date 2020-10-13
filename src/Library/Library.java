@@ -10,13 +10,29 @@ import Exceptions.Log;
 public class Library implements Serializable, Iterable<Game> {
     private ArrayList<Game> array = new ArrayList<Game>();
     private final String path;
+    
+    public Library() { path = "data/db.bin"; }
 
-    public Library(String path) {
-        this.path = path;
+    public Library(String path) { this.path = path; }
+
+    public boolean add(Game addition) { 
+    	array.add(addition); 
+    	try { write(); } 
+    	catch (IOException e) { 
+    		new Log(e.getMessage()); 
+    		return false;
+    		}
+    	return true;
     }
-
-    public void add(Game addition) { array.add(addition); }
-    public void remove(Game reduction) { array.remove(reduction); }
+    public boolean remove(Game reduction) { 
+    	array.remove(reduction); 
+    	try { write(); } 
+    	catch (IOException e) { 
+    		new Log(e.getMessage());
+    		return false;
+    	}
+    	return true;
+    }
 
     public void write() throws IOException {
         FileOutputStream out = new FileOutputStream(path);
@@ -39,14 +55,39 @@ public class Library implements Serializable, Iterable<Game> {
         } catch (EOFException e) { // catch this lmao
         } catch (Exception e) { new Log(e.getMessage()); }
     }
+    
+    public boolean update(Game index, Game data) {
+    	array.set(array.indexOf(index), data);
+    	try { write(); } 
+    	catch (IOException e) { 
+    		new Log(e.getMessage());
+    		return false;
+    	}
+    	return true;
+    }
 
-    public void clear() {
+    public boolean clear() {
         try { new File(path).createNewFile(); }
-        catch (IOException e) { e.printStackTrace(); }
+        catch (IOException e) { 
+        	new Log(e.getMessage());
+        	return false;
+        }
+        return true;
     }
     
     public void sort(SortingMethod method) {
     	Collections.sort(array, Sort.get(method));
+    }
+    
+    public Library filter(String term) {
+    	Library filteredLibrary = new Library();
+    	for (Game item : array) {
+    		if (item.getTitle().toLowerCase().contains(term.toLowerCase())) {
+    			
+    			filteredLibrary.add(item);
+    		}
+    	}
+    	return filteredLibrary;
     }
 
     public int size() {return array.size();}

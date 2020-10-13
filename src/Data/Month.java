@@ -33,5 +33,10 @@ public enum Month {
 		}
 		return output;
 	}
-
+	public static Month valueOf(int i) {
+		for (Month month : Month.values()) {
+			if (month.value == i) { return month; }
+		}
+		return null;
+	}
 }

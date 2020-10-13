@@ -14,6 +14,9 @@ public abstract class InfoRetrieval {
     protected String url;
     protected Json APIData;
     
+    protected abstract void getData();
+	protected abstract void parseData();
+	
     protected String getInfo() {
     	return getInfo(new JProgressBar());
     }

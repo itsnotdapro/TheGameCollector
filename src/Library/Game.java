@@ -45,9 +45,15 @@ public class Game extends InfoRetrieval implements Serializable {
     public ArrayList<String> getGenres() { return this.genres; }
     public void setGenres(ArrayList<String> genres) { this.genres = genres; }
 
-    public Json APIResults;
+    private Json APIResults;
     public Object getResult(String key) { return APIResults.get(key); }
+    public Json getResults() { return APIResults; }
     public boolean hasData() { return (APIResults == null) ? false : true; }
+    public void setResults(Json APIResults) { 
+    	this.APIResults = APIResults; 
+    	parseData();
+    	}
+
 
     public Game(String title, float price, Platform platform, Date purchase, int rating, boolean physical) {
         setTitle(title);
@@ -56,39 +62,41 @@ public class Game extends InfoRetrieval implements Serializable {
         setPurchase(purchase);
         setRating(rating);
         setPhysical(physical);
-
-    }
-    
- 
+    }    
     
     public void getData() { getData(new JProgressBar()); }
     public void getData(JProgressBar bar) {    
     	String urlTitle = title.replace(" ", "%20");
     	urlTitle = urlTitle.replace("&", "%26");
         url = "https://rapidapi.p.rapidapi.com/games/" + urlTitle + (getPlatform() == Platform.PC ? "" :  ("?platform=" + platform.getApiName()));
-        System.out.println(url);
         try {
         	APIData = new Json(this.getInfo(bar));
         	APIResults = new Json((HashMap<String, Object>)APIData.get("results")); 
-        	if (!APIResults.isEmpty()) {
-        		setTitle((String)APIResults.get("title"));
-        		try {
-        			Date release;
-					release = new SimpleDateFormat("MMM dd yyyy").parse((String)APIResults.get("releaseDate"));
-					setRelease(release);
-				} catch (ParseException e) { 
-					setRelease(purchased);
-					new Log(e.getMessage());
-					System.err.println("Unable to parse release date");
-				}
-        		setGenres((ArrayList<String>)APIResults.get("genres"));
-        	} else {
-        		APIResults = null;
-        	}
+        	
+        	parseData();
+        	
         } catch (NullPointerException e) {
         	APIResults = null;
         	bar.setValue(100);
         }
+    }
+    
+    protected void parseData() {
+    	if (!APIResults.isEmpty()) {
+    		setTitle((String)APIResults.get("title"));
+    		try {
+    			Date release;
+				release = new SimpleDateFormat("MMM dd yyyy").parse((String)APIResults.get("releaseDate"));
+				setRelease(release);
+			} catch (ParseException e) { 
+				setRelease(purchased);
+				new Log(e.getMessage());
+				System.err.println("Unable to parse release date");
+			}
+    		setGenres((ArrayList<String>)APIResults.get("genres"));
+    	} else {
+    		APIResults = null;
+    	}
     }
     
     

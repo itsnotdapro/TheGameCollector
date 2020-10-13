@@ -97,13 +97,15 @@ public class Json implements Serializable {
                 // parsing title in results
                 if (resultKey.equals("\"title\":")) {
                     parsingKeyResult = false;
+                    if (repeatsParsed == 0 && c == ':') { repeatsParsed = 1; continue; }
                     if (c == ',') {
                         parsingKeyResult = true;
                         result.put("title", resultValue);
                         resultValue = "";
                         resultKey = "";
+                        repeatsParsed = 0;
                         continue;
-                    } if (c != '"' && c != ':') { resultValue += c; }
+                    } if (c != '"') { resultValue += c; }
                 }
 
                 // parsing release date in results

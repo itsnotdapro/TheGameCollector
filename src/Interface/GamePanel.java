@@ -21,9 +21,6 @@ public class GamePanel extends JPanel {
     private final Game game;
     public Game getGame() { return game; }
     
-    private ArrayList<GamePanel> allPanels;
-    public ArrayList<GamePanel> getAllPanels() { return allPanels; }
-    
     private final JPanel details = new JPanel();
     private final JLabel gameTitle = new JLabel();
     private final JLabel gamePrice = new JLabel();
@@ -34,7 +31,6 @@ public class GamePanel extends JPanel {
 
     public GamePanel(Game game, ArrayList<GamePanel> allPanels, SelectionListener listener) {
         this.game = game;
-        this.allPanels = allPanels;
         addMouseListener(listener);
         
         setTitleBorder();
@@ -45,16 +41,8 @@ public class GamePanel extends JPanel {
         gamePlatform.setText("Platform: " + game.getPlatform());
         gameRating.setText("Rating: " + game.getRating() + "/10");
         gamePurchase.setText("Purchase Date: " + new SimpleDateFormat("dd MMMM, yyyy").format(game.getPurchase()));
-
-        BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
-        try { image = getImage(); }
-        catch (IOException e) { new Log(e.getMessage()); }
-        ImageIcon art = new ImageIcon(image);
-        JLabel boxArtLabel = new JLabel(art);
-
+        
         details.setLayout(new BoxLayout(details, BoxLayout.Y_AXIS));
-
-        this.add(boxArtLabel);
         details.add(gameTitle);
         details.add(gamePrice);
         details.add(gamePlatform);
@@ -62,7 +50,13 @@ public class GamePanel extends JPanel {
         details.add(gamePurchase);
         
         if (game.hasData()) {
-        	System.out.println(game.getResult("genres"));
+        	BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+            try { image = getImage(); }
+            catch (IOException e) { new Log(e.getMessage()); }
+            ImageIcon art = new ImageIcon(image);
+            JLabel boxArtLabel = new JLabel(art);
+            this.add(boxArtLabel);
+            
         	details.add(new JLabel(" "));
         	JLabel release = new JLabel("Release Date: " + new SimpleDateFormat("dd MMMM, yyyy").format(game.getRelease()));
         	String genreText = "Genres: ";
@@ -96,12 +90,12 @@ public class GamePanel extends JPanel {
 
     public BufferedImage getImage() throws IOException {
     	if (!game.hasData()) { return ImageIO.read(new File("data/img/placeholder.jpg")); }
-        File imageFile = new File("data/img/" + game.getTitle().replace(":", "-") + ".jpg");
+        File imageFile = new File("data/img/" + game.getTitle().replace(":", "") + "-" + game.getPlatform() + ".jpg");
         // Get the image from a HTTP request if it does not exist
         if (!imageFile.exists()) {
             URL url = new URL((String)game.getResult("image"));
             InputStream inputStream = url.openStream();
-            OutputStream outputStream = new FileOutputStream(new File("data/img/" + game.getTitle().replace(":", "-") + ".jpg"));
+            OutputStream outputStream = new FileOutputStream(new File("data/img/" + game.getTitle().replace(":", "") + "-" + game.getPlatform() + ".jpg"));
 
             byte[] bytes = new byte[2048];
             int length;
