@@ -4,6 +4,7 @@ import Data.Json;
 import Exceptions.Log;
 import Data.InfoRetrieval;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,9 +18,16 @@ public class Game extends InfoRetrieval implements Serializable {
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
 
+    // If there was arithmetic that needed to be done on the prices, it would be safer to store them as integers, but there isn't so it's not
     private float price;
     public float getPrice() { return price; }
     public void setPrice(float price) { this.price = price; }
+    public String getPriceAsString() {
+    	DecimalFormat df = new DecimalFormat();
+    	df.setMinimumFractionDigits(2);
+    	df.setMaximumFractionDigits(2);
+    	return df.format(price);
+    }
 
     private Platform platform;
     public Platform getPlatform() { return platform; }
@@ -45,6 +53,7 @@ public class Game extends InfoRetrieval implements Serializable {
     public ArrayList<String> getGenres() { return this.genres; }
     public void setGenres(ArrayList<String> genres) { this.genres = genres; }
 
+    private Json APIData;
     private Json APIResults;
     public Object getResult(String key) { return APIResults.get(key); }
     public Json getResults() { return APIResults; }
@@ -52,7 +61,7 @@ public class Game extends InfoRetrieval implements Serializable {
     public void setResults(Json APIResults) { 
     	this.APIResults = APIResults; 
     	parseData();
-    	}
+    }
 
 
     public Game(String title, float price, Platform platform, Date purchase, int rating, boolean physical) {

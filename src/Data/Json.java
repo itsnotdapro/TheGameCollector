@@ -7,9 +7,8 @@ import java.util.HashMap;
 public class Json implements Serializable {
 	private HashMap<String, Object> data;
 	
-	
 	// Constructors
-	public Json(String jsonString) { data = parse(jsonString);}
+	public Json(String jsonString) { data = parse(jsonString); }
 	public Json(HashMap<String, Object> data) { this.data = data; }
 	
 	// Methods
@@ -185,7 +184,7 @@ public class Json implements Serializable {
                     parsingKeyResult = false;
                     if (c == ',') {
                         parsingKeyResult = true;
-                        result.put("score", resultValue);
+                        result.put("developers", resultValue);
                         repeatsParsed = 0;
                         resultValue = "";
                         resultKey = "";
@@ -215,7 +214,7 @@ public class Json implements Serializable {
                     parsingKeyResult = false;
                     if (c == ',') {
                         parsingKeyResult = true;
-                        result.put("score", resultValue);
+                        result.put("rating", resultValue);
                         repeatsParsed = 0;
                         resultValue = "";
                         resultKey = "";

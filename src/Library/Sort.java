@@ -41,6 +41,20 @@ public class Sort {
 					return g1.getRelease().compareTo(g2.getRelease());
 				}
 			};
+		case PURCHASE_FIRST:
+			return new Comparator<Game>() {
+				@Override
+				public int compare(Game g1, Game g2) {
+					return g2.getPurchase().compareTo(g1.getPurchase());
+				}
+			};
+		case PURCHASE_LAST:
+			return new Comparator<Game>() {
+				@Override
+				public int compare(Game g1, Game g2) {
+					return g1.getPurchase().compareTo(g2.getPurchase());
+				}
+			};
 		case RATING_LOWEST:
 			return new Comparator<Game>() {
 				@Override

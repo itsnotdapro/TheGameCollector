@@ -29,7 +29,7 @@ public class GamePanel extends JPanel {
     private final JLabel gamePurchase = new JLabel("Release Date:");
 
 
-    public GamePanel(Game game, ArrayList<GamePanel> allPanels, SelectionListener listener) {
+    public GamePanel(Game game, SelectionListener listener) {
         this.game = game;
         addMouseListener(listener);
         
@@ -37,7 +37,7 @@ public class GamePanel extends JPanel {
         
         gameTitle.setText(game.getTitle());
         gameTitle.setFont(new Font("Tahoma", Font.BOLD, 20));
-        gamePrice.setText("Price: $" + game.getPrice());
+        gamePrice.setText("Price: $" + game.getPriceAsString());
         gamePlatform.setText("Platform: " + game.getPlatform());
         gameRating.setText("Rating: " + game.getRating() + "/10");
         gamePurchase.setText("Purchase Date: " + new SimpleDateFormat("dd MMMM, yyyy").format(game.getPurchase()));
@@ -53,12 +53,14 @@ public class GamePanel extends JPanel {
         	BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
             try { image = getImage(); }
             catch (IOException e) { new Log(e.getMessage()); }
+            
+            
             ImageIcon art = new ImageIcon(image);
             JLabel boxArtLabel = new JLabel(art);
             this.add(boxArtLabel);
             
         	details.add(new JLabel(" "));
-        	JLabel release = new JLabel("Release Date: " + new SimpleDateFormat("dd MMMM, yyyy").format(game.getRelease()));
+        	details.add(new JLabel("Release Date: " + new SimpleDateFormat("dd MMMM, yyyy").format(game.getRelease())));
         	String genreText = "Genres: ";
         	int i = 0;
         	for (String genre : game.getGenres()) {
@@ -66,12 +68,14 @@ public class GamePanel extends JPanel {
         		++i;
         	}
         	JLabel genres = new JLabel(genreText);
-        	
-        	details.add(release);
+        	details.add(new JLabel("Developed by: " + game.getResult("developers")));
         	details.add(genres);
+        	details.add(new JLabel("Metacritic Score: " + game.getResult("score")));
         }
         
         this.add(details);
+        System.out.println(this.getHeight());
+        
     }
     
     public void setTitleBorder() { 

@@ -74,16 +74,9 @@ public class Application extends JFrame {
     public JButton getAddButton() { return addButton; }
     private final JLabel ratingLabel = new JLabel("Rating: ");
     private final JPanel ratingPanel = new JPanel();
-    private final JRadioButton rate1 = new JRadioButton("");
-    private final JRadioButton rate2 = new JRadioButton("");
-    private final JRadioButton rate3 = new JRadioButton("");
-    private final JRadioButton rate4 = new JRadioButton("");
-    private final JRadioButton rate5 = new JRadioButton("");
-    private final JRadioButton rate6 = new JRadioButton("");
-    private final JRadioButton rate7 = new JRadioButton("");
-    private final JRadioButton rate8 = new JRadioButton("");
-    private final JRadioButton rate9 = new JRadioButton("");
-    private final JRadioButton rate10 = new JRadioButton("");
+    private final JRadioButton[] ratingButtons = new JRadioButton[10];
+    private final RatingListener ratingListener;
+    public RatingListener getRatingListener() { return ratingListener; }
     private final JProgressBar progressBar = new JProgressBar();
     private final JLabel progressLabel = new JLabel("Progress");
     private final JPanel sortingPanel = new JPanel();
@@ -93,9 +86,10 @@ public class Application extends JFrame {
     public JButton getDeleteButton() { return deleteButton; }
     private final SelectionListener selectionListener = new SelectionListener(this);
     private final JPanel collectionPanel = new JPanel();
-    private final JPanel panel_1 = new JPanel();
+    private final JPanel programTitleLabel = new JPanel();
     private final JLabel filterLabel = new JLabel("Search: ");
     private final JTextField filterField = new JTextField();
+    private final JLabel itemsCulledLabel = new JLabel("");
 
     public Application() {
     	filterField.setColumns(10);
@@ -121,10 +115,10 @@ public class Application extends JFrame {
         gbl_collectionPanel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
         collectionPanel.setLayout(gbl_collectionPanel);
         GridBagLayout gbl_sortingPanel = new GridBagLayout();
-        gbl_sortingPanel.columnWidths = new int[] {0, 0};
-        gbl_sortingPanel.rowHeights = new int[] {0, 0, 0};
-        gbl_sortingPanel.columnWeights = new double[]{0.0, 1.0};
-        gbl_sortingPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+        gbl_sortingPanel.columnWidths = new int[] {0, 0, 0};
+        gbl_sortingPanel.rowHeights = new int[] {0, 0, 0, 0};
+        gbl_sortingPanel.columnWeights = new double[]{0.0, 1.0, 0.0};
+        gbl_sortingPanel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
         sortingPanel.setAlignmentY(0.0f);
         sortingPanel.setAlignmentX(0.0f);
         GridBagConstraints gbc_sortingPanel = new GridBagConstraints();
@@ -144,14 +138,23 @@ public class Application extends JFrame {
         sortingPanel.add(sortLabel, gbc_sortLabel);
         sortingMethod.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		library.sort((SortingMethod)sortingMethod.getSelectedItem());
-        		drawGames(library);
+        		SortingMethod method = (SortingMethod)sortingMethod.getSelectedItem();
+        		if (method.requiresData()) {
+        			Library fLib = library.filter(true);
+        			itemsCulledLabel.setText("  Games missing data have been hidden");
+        			fLib.sort(method);
+        			drawGames(fLib);
+        		} else {
+        			library.sort(method);
+        			itemsCulledLabel.setText("");
+            		drawGames(library);
+        		}
+        		
         	}
         });
         
         sortingMethod.setModel(new DefaultComboBoxModel<SortingMethod>(SortingMethod.values()));
-        
-        
+                
         // God I hate how much code GridBagLayout makes //
         
         GridBagConstraints gbc_sortingMethod = new GridBagConstraints();
@@ -164,16 +167,26 @@ public class Application extends JFrame {
         
         GridBagConstraints gbc_filterLabel = new GridBagConstraints();
         gbc_filterLabel.anchor = GridBagConstraints.EAST;
-        gbc_filterLabel.insets = new Insets(0, 0, 0, 5);
+        gbc_filterLabel.insets = new Insets(0, 0, 5, 5);
         gbc_filterLabel.gridx = 0;
         gbc_filterLabel.gridy = 1;
         sortingPanel.add(filterLabel, gbc_filterLabel);
         
         GridBagConstraints gbc_filterField = new GridBagConstraints();
+        gbc_filterField.insets = new Insets(0, 0, 5, 0);
         gbc_filterField.fill = GridBagConstraints.HORIZONTAL;
         gbc_filterField.gridx = 1;
         gbc_filterField.gridy = 1;
         sortingPanel.add(filterField, gbc_filterField);
+        
+        GridBagConstraints gbc_itemsCulledLabel = new GridBagConstraints();
+        gbc_itemsCulledLabel.gridheight = 2;
+        gbc_itemsCulledLabel.anchor = GridBagConstraints.EAST;
+        gbc_itemsCulledLabel.insets = new Insets(0, 0, 0, 5);
+        gbc_itemsCulledLabel.gridx = 2;
+        gbc_itemsCulledLabel.gridy = 0;
+        itemsCulledLabel.setForeground(Color.GRAY);
+        sortingPanel.add(itemsCulledLabel, gbc_itemsCulledLabel);
         filterField.addKeyListener(new KeyAdapter() {
     		@Override
     		public void keyReleased(KeyEvent e) { 
@@ -222,8 +235,8 @@ public class Application extends JFrame {
         		if (selectionListener.getSelectedPanel() != null) {
         			library.remove(selectionListener.getSelectedPanel().getGame());
         			gamePanels.remove(selectionListener.getSelectedPanel());
-        	drawGames(library);
-        	selectedGame = null;
+        			drawGames(library);
+        			selectedGame = null;
         		}
         	}
         });
@@ -237,13 +250,14 @@ public class Application extends JFrame {
 
         // Writing the library to the UI //
         library.sort(SortingMethod.NAME);
+        System.out.println(library);
         drawGames(library);
+        
         controls.setBorder(new EmptyBorder(20, 20, 20, 20));
+        controls.setLayout(new GridLayout(3, 1, 0, 0));
         panel.add(controls);
         
-        controls.setLayout(new GridLayout(3, 1, 0, 0));
-        
-        controls.add(panel_1);
+        controls.add(programTitleLabel);
         controls.add(fieldsPanel);
         GridBagLayout gbl_fieldsPanel = new GridBagLayout();
         fieldsPanel.setLayout(gbl_fieldsPanel);
@@ -271,7 +285,7 @@ public class Application extends JFrame {
     			e.getComponent().transferFocus();
     			e.getComponent().requestFocus();
     			checkAllFields(); 
-    			}
+    		}
     	});
         
         GridBagConstraints gbc_priceLabel = new GridBagConstraints();
@@ -295,7 +309,7 @@ public class Application extends JFrame {
     			e.getComponent().transferFocus();
     			e.getComponent().requestFocus();
     			checkAllFields(); 
-    			}
+    		}
     	});
         
         GridBagConstraints gbc_platformLabel = new GridBagConstraints();
@@ -334,7 +348,7 @@ public class Application extends JFrame {
     			e.getComponent().transferFocus();
     			e.getComponent().requestFocus();
     			checkAllFields(); 
-    			}
+    		}
     	});
         dayField.setColumns(10);
         dayField.setInputVerifier(new DayVerifier(monthField));
@@ -349,7 +363,7 @@ public class Application extends JFrame {
     			e.getComponent().transferFocus();
     			e.getComponent().requestFocus();
     			checkAllFields(); 
-    			}
+    		}
     	});
         yearField.setColumns(10);
         yearField.setInputVerifier(new YearVerifier());
@@ -369,29 +383,16 @@ public class Application extends JFrame {
         gbc_ratingPanel.gridx = 2;
         gbc_ratingPanel.gridy = 4;
         fieldsPanel.add(ratingPanel, gbc_ratingPanel);
-        RatingListener ratingListener = new RatingListener(rate1, rate2, rate3, rate4, rate5, rate6, rate7, rate8, rate9, rate10);
-        rate1.setSelected(true);
-        rate1.addActionListener(ratingListener);
-        rate2.addActionListener(ratingListener);
-        rate3.addActionListener(ratingListener);
-        rate4.addActionListener(ratingListener);
-        rate5.addActionListener(ratingListener);
-        rate6.addActionListener(ratingListener);
-        rate7.addActionListener(ratingListener);
-        rate8.addActionListener(ratingListener);
-        rate9.addActionListener(ratingListener);
-        rate10.addActionListener(ratingListener); 
         
-        ratingPanel.add(rate1);        
-        ratingPanel.add(rate2);        
-        ratingPanel.add(rate3);        
-        ratingPanel.add(rate4);        
-        ratingPanel.add(rate5);       
-        ratingPanel.add(rate6);        
-        ratingPanel.add(rate7);       
-        ratingPanel.add(rate8);        
-        ratingPanel.add(rate9);        
-        ratingPanel.add(rate10);        
+        ratingListener = new RatingListener(ratingButtons);
+        for (int i = 0; i < 10; i++) {
+        	ratingButtons[i] = new JRadioButton("");
+        	ratingButtons[i].addActionListener(ratingListener);
+        	ratingPanel.add(ratingButtons[i]);
+        	
+        }
+        
+        ratingButtons[0].setSelected(true);
         
         GridBagConstraints gbc_physicalLabel = new GridBagConstraints();
         gbc_physicalLabel.anchor = GridBagConstraints.EAST;
@@ -452,6 +453,7 @@ public class Application extends JFrame {
         		}).start();
         	}
         });
+        progressPanel.setBorder(new EmptyBorder(0, 20, 20, 20));
         
         controls.add(progressPanel);
         GridBagLayout gbl_progressPanel = new GridBagLayout();
@@ -495,7 +497,7 @@ public class Application extends JFrame {
             constraint.gridx = 0;
             constraint.gridy = i;
            // constraint.anchor = GridBagConstraints.WEST;
-            GamePanel gp = new GamePanel(game, gamePanels, selectionListener);
+            GamePanel gp = new GamePanel(game, selectionListener);
             gamePanels.add(gp);
             games.add(gp, constraint);
             ++i;

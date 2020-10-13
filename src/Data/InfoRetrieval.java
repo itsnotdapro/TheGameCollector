@@ -12,8 +12,7 @@ import Exceptions.Log;
 
 public abstract class InfoRetrieval {
     protected String url;
-    protected Json APIData;
-    
+       
     protected abstract void getData();
 	protected abstract void parseData();
 	

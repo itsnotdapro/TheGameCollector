@@ -89,6 +89,14 @@ public class Library implements Serializable, Iterable<Game> {
     	}
     	return filteredLibrary;
     }
+    
+    public Library filter(boolean hasData) {
+    	Library filteredLibrary = new Library();
+    	for (Game item : array) {
+    		if (item.hasData() == hasData) { filteredLibrary.add(item); }
+    	}
+    	return filteredLibrary;
+    }
 
     public int size() {return array.size();}
 

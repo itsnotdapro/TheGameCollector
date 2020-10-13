@@ -48,16 +48,20 @@ public class SelectionListener extends MouseAdapter {
     	purchaseDateOfSelected.setTime(selectedGame.getPurchase());
     	
     	instance.getNameField().setText(selectedGame.getTitle());
-    	instance.getPriceField().setText(Float.toString(selectedGame.getPrice()));
+    	instance.getPriceField().setText(selectedGame.getPriceAsString());
     	instance.getPlatformField().setSelectedItem((selectedGame.getPlatform()));
     	instance.getDayField().setText(Integer.toString(purchaseDateOfSelected.get(Calendar.DATE)));
     	instance.getMonthField().setSelectedItem(Month.valueOf(purchaseDateOfSelected.get(Calendar.MONTH)));
     	instance.getYearField().setText(Integer.toString(purchaseDateOfSelected.get(Calendar.YEAR)));
+    	instance.getRatingListener().setValue(selectedGame.getRating());
+    	instance.getPhysicalField().setSelected(selectedGame.getPhysical());
 
     	
     	addButton.setText("Update");
     	fieldsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "Update Game", TitledBorder.RIGHT, 0, new Font("Tahoma", Font.BOLD, 30)));
     	fieldsPanel.setBorder(new CompoundBorder(new EmptyBorder(20, 20, 20, 20), fieldsPanel.getBorder()));
+    	
+    	instance.checkAllFields();
 	}
 	
 	public void deselect() {
@@ -74,9 +78,13 @@ public class SelectionListener extends MouseAdapter {
     	instance.getDayField().setText("");
     	instance.getMonthField().setSelectedItem(Month.JANUARY);
     	instance.getYearField().setText("");
+    	instance.getRatingListener().setValue(1);
+    	instance.getPhysicalField().setSelected(false);
 		
 		addButton.setText("Add");
 		fieldsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "Add Game", TitledBorder.RIGHT, 0, new Font("Tahoma", Font.BOLD, 30)));
 		fieldsPanel.setBorder(new CompoundBorder(new EmptyBorder(20, 20, 20, 20), fieldsPanel.getBorder()));
+		
+		instance.checkAllFields();
 	}
 }

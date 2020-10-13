@@ -1,17 +1,26 @@
 package Library;
 
 public enum SortingMethod {
-	NAME ("Name"),
-	RELEASE_FIRST ("Release (Latest)"),
-	RELEASE_LAST ("Release (Earliest)"),
-	RATING_HIGHEST ("Rating (Highest)"),
-	RATING_LOWEST ("Rating (Lowest)"),
-	PRICE_HIGHEST ("Pice (Highest)"),
-	PRICE_LOWEST ("Price (Lowest)");
+	NAME ("Name", false),
+	PURCHASE_FIRST ("Purchase Date (Latest)", false),
+	PURCHASE_LAST ("Purchase Date (Earliest)", false),
+	RELEASE_FIRST ("Release (Latest)", true),
+	RELEASE_LAST ("Release (Earliest)", true),
+	RATING_HIGHEST ("Rating (Highest)", false),
+	RATING_LOWEST ("Rating (Lowest)", false),
+	PRICE_HIGHEST ("Pice (Highest)", false),
+	PRICE_LOWEST ("Price (Lowest)", false),
+	DEVELOPER ("Developer", true),
+	METACRITIC ("Metacritic Score", true);
 	
 	private String readableName;
-	private SortingMethod(String readableName) { this.readableName = readableName; }
+	private boolean requiresData;
+	private SortingMethod(String readableName, boolean requiresData) { 
+		this.readableName = readableName; 
+		this.requiresData = requiresData;
+		}
 	
 	@Override
 	public String toString() { return readableName; }
+	public boolean requiresData() { return requiresData; }
 }
