@@ -19,6 +19,8 @@ import Interface.GamePanel;
 import Library.Game;
 import Library.Platform;
 
+/** Listener that handles the mouse selection of GamePanels
+ * @author 19076935 */
 public class SelectionListener extends MouseAdapter {
 	private GamePanel selectedGamePanel;
 	private Game selectedGame;
@@ -26,12 +28,19 @@ public class SelectionListener extends MouseAdapter {
 	private JPanel fieldsPanel;
 	private Application instance;
 	
+	/** Instantiates the Selection Listener
+	 * @param instance The running application
+	 * @author 19076935 */
 	public SelectionListener(Application instance) { 
 		this.instance = instance;
 		deleteButton = instance.getDeleteButton(); 
 		addButton = instance.getAddButton();
 		fieldsPanel = instance.getFieldsPanel();
 	}
+	
+	/** Gets the panel that is selected
+	 * @return The selected GamePanel
+	 * @author 19076935 */
 	public GamePanel getSelectedPanel() { return selectedGamePanel; }
 	
 	@Override
@@ -64,6 +73,8 @@ public class SelectionListener extends MouseAdapter {
     	instance.checkAllFields();
 	}
 	
+	/** Deselects all GamePanels
+	 * @author 19076935 */
 	public void deselect() {
 		for (GamePanel gp : instance.getGamePanels()) {
 			gp.setTitleBorder();

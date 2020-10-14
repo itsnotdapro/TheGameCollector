@@ -35,7 +35,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.border.EtchedBorder;
 
 /** Main driver class of the application. Handles creating UI, user input, and console commands
-* @author 19076935 */
+ * @author 19076935 */
 public class Application extends JFrame {
 	private static final long serialVersionUID = 84097850937829L;
 	private Library library;
@@ -44,38 +44,51 @@ public class Application extends JFrame {
 	private GamePanel selectedGame = null;
 	
 	// All of the Swing components, and variables used for GUI control
+	// Dear god thats an ass load of components
     private final JPanel panel = new JPanel();
+    /** @return The master JPanel @author 19076935 */ 
+    public JPanel getPanel() { return panel; }
     private final JPanel games = new JPanel();
     private final JPanel controls = new JPanel();
     private final JPanel fieldsPanel = new JPanel();
+    /** @return The entry field's JPanel @author 19076935 */
     public JPanel getFieldsPanel() { return fieldsPanel; }
     private final JLabel nameLabel = new JLabel("Name: ");
     private final JTextField nameField = new JTextField();
+    /** @return The name entry JTextField @author 19076935 */
     public JTextField getNameField() { return nameField; }
     private final JLabel priceLabel = new JLabel("Price: ");
     private final JTextField priceField = new JTextField();
+    /** @return The price entry JTextField @author 19076935 */
     public JTextField getPriceField() { return priceField; }
     private final JLabel platformLabel = new JLabel("Platform: ");
     private final JComboBox<Platform> platformField = new JComboBox<Platform>();
+    /** @return The platform entry JComboBox @author 19076935 */
     public JComboBox<Platform> getPlatformField() { return platformField; }
     private final JLabel physicalLabel = new JLabel("Physical: ");
     private final JCheckBox physicalField = new JCheckBox("");
+    /** @return The physical or digital entry JCheckBox @author 19076935 */
     public JCheckBox getPhysicalField() { return physicalField; }
     private final JLabel pruchaseLabel = new JLabel("Date Purchased: ");
     private final JPanel datePanel = new JPanel();
     private final JComboBox<Month> monthField = new JComboBox<Month>();
+    /** @return The month entry JComboBox @author 19076935 */
     public JComboBox<Month> getMonthField() { return monthField; }
     private final JTextField dayField = new JTextField();
+    /** @return The day entry JTextField @author 19076935 */
     public JTextField getDayField() { return dayField; }
     private final JTextField yearField = new JTextField();
+    /** @return The year entry JTextField @author 19076935 */
     public JTextField getYearField() { return yearField; }
     private final JPanel progressPanel = new JPanel();
     private final JButton addButton = new JButton("Add");
+    /** @return The add JButton @author 19076935 */
     public JButton getAddButton() { return addButton; }
     private final JLabel ratingLabel = new JLabel("Rating: ");
     private final JPanel ratingPanel = new JPanel();
     private final JRadioButton[] ratingButtons = new JRadioButton[10];
     private final RatingListener ratingListener;
+    /** @return The rating listener of the application @author 19076935 */
     public RatingListener getRatingListener() { return ratingListener; }
     private final JProgressBar progressBar = new JProgressBar();
     private final JLabel progressLabel = new JLabel("Progress");
@@ -83,6 +96,7 @@ public class Application extends JFrame {
     private final JLabel sortLabel = new JLabel("Sorting Method: ");
     private final JComboBox<SortingMethod> sortingMethod = new JComboBox<SortingMethod>();
     private final JButton deleteButton = new JButton("Delete");
+    /** @return The delete JButton @author 19076935 */
     public JButton getDeleteButton() { return deleteButton; }
     private final SelectionListener selectionListener = new SelectionListener(this);
     private final JPanel collectionPanel = new JPanel();
@@ -91,6 +105,8 @@ public class Application extends JFrame {
     private final JTextField filterField = new JTextField();
     private final JLabel itemsCulledLabel = new JLabel("");
 
+    /** Constructor of the application object. This instantiates the main runtime thread 
+     * @author 19076935    */
     public Application() {
     	filterField.setColumns(10);
         panel.setLayout(new GridLayout());
@@ -477,7 +493,11 @@ public class Application extends JFrame {
         progressPanel.add(progressBar, gbc_progressBar);
     }
     
+    /** Method that checks all the input fields and enables the add button if they have all been validated
+     * @author 19076935 */
     public void checkAllFields() {
+    	// These check if the field is greater than zero as the input verifiers treat "" as a valid string, so that
+    	// The user can tab out of empty fields
     	if (nameField.getText().length() > 0 && 
     	    priceField.getInputVerifier().verify(priceField) && !priceField.getText().equals("") && 
     	    dayField.getInputVerifier().verify(dayField) && !dayField.getText().equals("") &&
@@ -488,6 +508,9 @@ public class Application extends JFrame {
     	}
     }
     
+    /** Draws a given library to the screen
+     * @param library The library to draw to the screen
+     * @author 19076935 */
     public void drawGames(Library library) {
     	games.removeAll();
     	gamePanels.clear();
@@ -506,8 +529,6 @@ public class Application extends JFrame {
         games.revalidate();
         games.repaint();
     }
-    
-    public JPanel getPanel() { return panel; }
 
     /** Program launch point
     * @param args Console arguments

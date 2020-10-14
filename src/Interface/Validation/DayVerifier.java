@@ -9,8 +9,13 @@ import javax.swing.JComponent;
 import javax.swing.JTextField;
 import Data.Month;
 
+/** Verifier to check the day input field
+ * @author 19076935 */
 public class DayVerifier extends InputVerifier {
 	private JComboBox<Month> monthComboBox;
+	/** Constructor to instantiate the verifier
+	 * @param monthComboBox The month field combo box
+	 * @author 19076935 */
 	public DayVerifier(JComboBox<Month> monthComboBox) {
 		this.monthComboBox = monthComboBox;
 	}

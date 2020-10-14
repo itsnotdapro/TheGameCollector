@@ -5,7 +5,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
+/** Class that logs an error to a file
+ * @author 19076935 */
 public class Log {
+	/** Prints an error string to a file on disk
+	 * @param e The string to write
+	 * @author 19076935 */
 	public Log(String e) {
 		try {
 			File log = new File("data/logs/" + new Date() + ".txt");

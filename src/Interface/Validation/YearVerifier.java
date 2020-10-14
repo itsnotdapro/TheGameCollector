@@ -7,6 +7,8 @@ import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 
+/** Verifier to check the input of the year field
+ * @author 19076935 */
 public class YearVerifier extends InputVerifier {
 	@Override
 	public boolean verify(JComponent input) {

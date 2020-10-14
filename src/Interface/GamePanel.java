@@ -17,8 +17,11 @@ import java.util.ArrayList;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/** A Object that represents a game drawn to the UI
+ * @author 19076935 */
 public class GamePanel extends JPanel {
     private final Game game;
+    /** @return The game the panel is displaying @author 19076935 */
     public Game getGame() { return game; }
     
     private final JPanel details = new JPanel();
@@ -28,7 +31,10 @@ public class GamePanel extends JPanel {
     private final JLabel gameRating = new JLabel();
     private final JLabel gamePurchase = new JLabel("Release Date:");
 
-
+    /** Instantiates the JPanel that represents a game
+     * @param game The game being drawn
+     * @param listener The selection listener that handles selection of the game
+     * @author 19076935 */
     public GamePanel(Game game, SelectionListener listener) {
         this.game = game;
         addMouseListener(listener);
@@ -78,13 +84,18 @@ public class GamePanel extends JPanel {
         
     }
     
+    /** Sets the border when the panel is not selected
+     * @author 19076935 */
     public void setTitleBorder() { 
     	// For some reason you have to clear the border before you make a new one with compound borders
     	setBorder(BorderFactory.createEmptyBorder());
 	    setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), 
 	    		                                  game.getPhysical() ? "Physical" : "Digital", 
 	    		                                  game.getPhysical() ? TitledBorder.RIGHT : TitledBorder.LEFT, 0));
-    	}
+    }
+    
+    /** Sets the border when the panel is selected
+     * @author 19076935 */
     public void setSelectedBorder() {
     	setBorder(BorderFactory.createCompoundBorder(BorderFactory.createDashedBorder(Color.DARK_GRAY, 2, 2, 2, false), 
     												 BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), 
@@ -92,6 +103,10 @@ public class GamePanel extends JPanel {
     														 					      game.getPhysical() ? TitledBorder.RIGHT : TitledBorder.LEFT, 0)));
     }
 
+    /** Gets the image associated with the game
+     * @return Image associated with the game as found in data/img/gameTitle.jpg 
+     * @throws IOException If the FileIO fails for any reason
+     * @author 19076935 */
     public BufferedImage getImage() throws IOException {
     	if (!game.hasData()) { return ImageIO.read(new File("data/img/placeholder.jpg")); }
         File imageFile = new File("data/img/" + game.getTitle().replace(":", "") + "-" + game.getPlatform() + ".jpg");
@@ -116,11 +131,11 @@ public class GamePanel extends JPanel {
     }
 
     /** Method to resize a BufferedImage
-    * @param src The source image to be resized
-    * @param w The target width
-    * @param h The target height
-    * @return The resized image
-    * @author 19076935 */
+     * @param src The source image to be resized
+     * @param w The target width
+     * @param h The target height
+     * @return The resized image
+     * @author 19076935 */
     public static BufferedImage resize(BufferedImage src, int w, int h) {
         Image scaled = src.getScaledInstance(w, h, Image.SCALE_DEFAULT);
         BufferedImage output = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);

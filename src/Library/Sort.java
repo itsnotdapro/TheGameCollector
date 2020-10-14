@@ -69,7 +69,22 @@ public class Sort {
 					return g2.getRating() - g1.getRating();
 				}
 			};
-		}
+		case DEVELOPER:
+			return new Comparator<Game>() {
+				@Override
+				public int compare(Game g1, Game g2) {
+					return ((String)g1.getResult("developers")).compareTo((String)g2.getResult("developers"));
+				}
+			};
+		
+	case METACRITIC:
+		return new Comparator<Game>() {
+			@Override
+			public int compare(Game g1, Game g2) {
+				return (int)g2.getResult("score") - (int)g1.getResult("score");
+			}
+		};
+	}
 		return null;
 	}
 }

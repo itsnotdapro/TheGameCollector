@@ -10,16 +10,25 @@ import javax.swing.JProgressBar;
 
 import Exceptions.Log;
 
+/** An abstract class that can be extended to an object that requires information to be 
+ * retrieved from the API. getInfo method is defined as part of the abstract class, but 
+ * retrieving data and parsing data from the info must be declared as part of the subclass
+ * @author 1906935 */
 public abstract class InfoRetrieval {
     protected String url;
        
     protected abstract void getData();
 	protected abstract void parseData();
 	
-    protected String getInfo() {
-    	return getInfo(new JProgressBar());
-    }
+	/** Gets the information specified by the object's URL
+	 * (used when not making GUI calls, as function requires a progress bar to update)
+	 * @return The JSON string retrieved from the API
+	 * @author 19076935 */
+    protected String getInfo() { return getInfo(new JProgressBar()); }
 
+    /** Gets the information specified by the object's URL
+	 * @return The JSON string retrieved from the API
+	 * @author 19076935 */
     protected String getInfo(JProgressBar bar) {
         try {
         	bar.setValue(0);

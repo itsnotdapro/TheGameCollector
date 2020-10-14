@@ -6,6 +6,8 @@ import javax.swing.InputVerifier;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 
+/** Verifier to check the price field
+ * @author 19076935 */
 public class PriceVerifier extends InputVerifier {
 	@Override
 	public boolean verify(JComponent input) {
