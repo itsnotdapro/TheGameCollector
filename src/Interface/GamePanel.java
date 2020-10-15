@@ -14,7 +14,7 @@ import java.io.*;
 import java.net.*;
 import java.text.SimpleDateFormat;
 
-/** A Object that represents a game drawn to the UI
+/** An object that represents a game drawn to the UI
  * @author 19076935 */
 public class GamePanel extends JPanel {
     private final Game game;

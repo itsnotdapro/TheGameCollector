@@ -17,6 +17,8 @@ import Exceptions.Log;
 import Library.Platform;
 import Library.SortingMethod;
 
+/** Holds the current application state of the Swing UI, to be stored across sessions
+ * @author 19076935 */
 public class State implements Config {
 	private final String path = "data/.conf";
 	
@@ -35,11 +37,25 @@ public class State implements Config {
 	private boolean physicalEntry = false;
 	private boolean addButton = false;
 	
+	/** Instantiates a state object from the .conf file in /data
+	 * @author 19076935 */
 	public State() {
 		try { read(); }
 		catch(IOException e) {}
 	}
 	
+	/** Instantiates a state object from given parameters
+	 * @param defaultMethod The sorting method currently selected
+	 * @param nameFieldEntry The text inside the nameField
+	 * @param priceFieldEntry The text inside the priceField
+	 * @param dayFieldEntry The text inside the dayField
+	 * @param yearFieldEntry The text inside the yearField
+	 * @param platformEntry The selected platform
+	 * @param monthEntry The selected month
+	 * @param ratingEntry The currently selected rating value
+	 * @param physicalEntry The currently selected state of the physicalField
+	 * @param addButton The enabled/disabled state of the add button
+	 * @author 19076935 */
 	public State(SortingMethod defaultMethod, String nameFieldEntry, String priceFieldEntry, String dayFieldEntry, String yearFieldEntry,
 				 Platform platformEntry, Month monthEntry, int ratingEntry, boolean physicalEntry, boolean addButton) 
 	{ 
@@ -58,6 +74,9 @@ public class State implements Config {
 		this.addButton = addButton;
 	}
 	
+	/** Loads the application state stored in the object
+	 * @param instance The application instance to load the state into
+	 * @author 19076935 */
 	public void load(Application instance) {
 		instance.getSortingMethodBox().setSelectedItem(defaultMethod);
 		

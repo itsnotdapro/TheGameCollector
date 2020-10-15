@@ -8,7 +8,17 @@ import java.io.Serializable;
 public interface Config extends Serializable {
 	public final String path = "data/file.bin";
 	
+	/** Method to write the object to a file
+	 * @throws IOException if any IOException occurs
+	 * @author 19076935 */
 	public void write() throws IOException;
+	
+	/** Method to read the object from a file
+	 * @throws IOException if any IOException occurs
+	 * @author 19076935 */
 	public void read() throws IOException;
+	
+	/** Method to clear an object's associated file
+	 * @author 19076935 */
 	public boolean clear();
 }
