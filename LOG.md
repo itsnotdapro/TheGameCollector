@@ -9,6 +9,12 @@ The UI will be powered by Java's Swing framework, as it is the easiest way to co
 
 As this project is a university assignment, and so all code must be written by me, there are some functions that would normally be taken from libraries, such as a JSON parser, that will have to be hand developed instead
 
+> The Program has been written as a Swing UI application, but the console UI can be enabled either by running with the console argument "c":
+> ``` javac Application.java```
+> ``` java Application c ```
+>or through the file menu in the top corner as seen here: 
+>![File menu](docs/RunConsoleExample.png)
+
 ---
 >#### Each new row is a new entry, i.e. a unique task being documented
 ## Design Phase

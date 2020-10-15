@@ -1,5 +1,6 @@
 package Interface;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import Data.Month;
@@ -29,6 +30,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -105,11 +107,14 @@ public class Application extends JFrame {
     private final JLabel filterLabel = new JLabel("Search: ");
     private final JTextField filterField = new JTextField();
     private final JLabel itemsCulledLabel = new JLabel("");
+    private final JLabel titleLabel = new JLabel("The GAME COLLECTOR");
 
     /** Constructor of the application object. This instantiates the main runtime thread 
      * @author 19076935    */
     public Application(String name) {
     	super(name);
+    	ImageIcon ico = new ImageIcon("data/img/favicon.jpg");
+    	setIconImage(ico.getImage());
     	
         panel.setLayout(new GridLayout());
         
@@ -275,6 +280,10 @@ public class Application extends JFrame {
         panel.add(controls);
         
         controls.add(programTitleLabel);
+        
+        titleLabel.setFont(new Font("Segoe UI Black", Font.BOLD | Font.ITALIC, 60));       
+        programTitleLabel.add(titleLabel);                                                                        
+        
         controls.add(fieldsPanel);
         GridBagLayout gbl_fieldsPanel = new GridBagLayout();
         fieldsPanel.setLayout(gbl_fieldsPanel);
