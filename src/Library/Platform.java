@@ -1,5 +1,7 @@
 package Library;
 
+import Exceptions.InvalidPlatformException;
+
 public enum Platform {
     PC,
     PS ("PlayStation", "playstation"),
@@ -26,16 +28,24 @@ public enum Platform {
     private String apiName;
 
 
-    Platform(String name, String apiName) {
+    private Platform(String name, String apiName) {
         this.name = name;
         this.apiName = apiName;
     }
 
-    Platform() {
-    	this.apiName = "PC";
-    }
+    private Platform() { this.apiName = "PC"; }
     
-    String getApiName() { return apiName; }
+    public String getApiName() { return apiName; }
+	public String value() { return super.toString(); }
+	
+	public static Platform getPlatformFromString(String name) throws InvalidPlatformException {
+		for (Platform platform : values()) {
+			if (name.toLowerCase().equals(platform.value().toLowerCase()) || name.toLowerCase().equals(platform.toString().toLowerCase())) {
+				return platform;
+			}
+		}
+		throw new InvalidPlatformException();
+	}
 
     @Override
     public String toString() {

@@ -13,9 +13,6 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 /** A Object that represents a game drawn to the UI
  * @author 19076935 */
@@ -46,7 +43,7 @@ public class GamePanel extends JPanel {
         gamePrice.setText("Price: $" + game.getPriceAsString());
         gamePlatform.setText("Platform: " + game.getPlatform());
         gameRating.setText("Rating: " + game.getRating() + "/10");
-        gamePurchase.setText("Purchase Date: " + new SimpleDateFormat("dd MMMM, yyyy").format(game.getPurchase()));
+        gamePurchase.setText("Purchase Date: " + Game.getDateAsString(game.getPurchase()));
         
         details.setLayout(new BoxLayout(details, BoxLayout.Y_AXIS));
         details.add(gameTitle);
@@ -66,7 +63,7 @@ public class GamePanel extends JPanel {
             this.add(boxArtLabel);
             
         	details.add(new JLabel(" "));
-        	details.add(new JLabel("Release Date: " + new SimpleDateFormat("dd MMMM, yyyy").format(game.getRelease())));
+        	details.add(new JLabel("Release Date: " + Game.getDateAsString(game.getRelease())));
         	String genreText = "Genres: ";
         	int i = 0;
         	for (String genre : game.getGenres()) {
@@ -79,9 +76,7 @@ public class GamePanel extends JPanel {
         	details.add(new JLabel("Metacritic Score: " + game.getResult("score")));
         }
         
-        this.add(details);
-        System.out.println(this.getHeight());
-        
+        this.add(details); 
     }
     
     /** Sets the border when the panel is not selected

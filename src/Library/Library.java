@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
+import Data.Config;
 import Exceptions.Log;
 
-public class Library implements Serializable, Iterable<Game> {
+public class Library implements Config, Iterable<Game> {
+	private final String path = "data/col.db";
+	
     private ArrayList<Game> array = new ArrayList<Game>();
-    private final String path;
     
-    public Library() { path = "data/db.bin"; }
-
-    public Library(String path) { this.path = path; }
+    public Library() {  }
 
     public boolean add(Game addition) { 
     	array.add(addition); 
@@ -33,7 +33,12 @@ public class Library implements Serializable, Iterable<Game> {
     	}
     	return true;
     }
+    
+    public Game atIndex(int i) {
+    	return array.get(i);
+    }
 
+    @Override
     public void write() throws IOException {
         FileOutputStream out = new FileOutputStream(path);
         ObjectOutputStream objOut = new ObjectOutputStream(out);
@@ -43,6 +48,7 @@ public class Library implements Serializable, Iterable<Game> {
     }
 
 
+    @Override
     public void read() throws IOException {
         try {
             FileInputStream in = new FileInputStream(path);
@@ -66,6 +72,7 @@ public class Library implements Serializable, Iterable<Game> {
     	return true;
     }
 
+    @Override
     public boolean clear() {
         try { new File(path).createNewFile(); }
         catch (IOException e) { 
@@ -99,12 +106,26 @@ public class Library implements Serializable, Iterable<Game> {
     }
 
     public int size() {return array.size();}
+    
+    public String stringSorted(SortingMethod sort) {
+    	if (array.isEmpty()) { return "Collection: \n\nN/A"; }
+    	Library sorted = this;
+    	if (sort.requiresData()) { sorted = sorted.filter(true); }
+    	sorted.sort(sort);
+        String out = "Collection" + (sort.requiresData() ? " (Games missing data have been hidden):" : ":") + "\n";
+        for (Game game : sorted.array) {
+            out += "\n- " + game.toString() + "\n";
+        }
+        if (sorted.array.isEmpty()) { out += " \nN/A"; }
+        return out;
+    }
 
     @Override
     public String toString() {
-        String out = "Library: \n";
+    	if (array.isEmpty()) { return "Collection is empty"; }
+        String out = "Collection: \n";
         for (Game game : array) {
-            out += game.toString() + "\n";
+            out += "\n- " + game.toString() + "\n";
         }
         return out;
     }

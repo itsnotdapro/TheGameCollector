@@ -17,12 +17,9 @@ import Library.Game;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Scanner;
 
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -30,9 +27,11 @@ import javax.swing.border.TitledBorder;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.border.EtchedBorder;
 
 /** Main driver class of the application. Handles creating UI, user input, and console commands
  * @author 19076935 */
@@ -94,7 +93,9 @@ public class Application extends JFrame {
     private final JLabel progressLabel = new JLabel("Progress");
     private final JPanel sortingPanel = new JPanel();
     private final JLabel sortLabel = new JLabel("Sorting Method: ");
-    private final JComboBox<SortingMethod> sortingMethod = new JComboBox<SortingMethod>();
+    private final JComboBox<SortingMethod> sortingMethodBox = new JComboBox<SortingMethod>();
+    /** @return The sorting method combo box @author 19076935 */
+    public JComboBox<SortingMethod> getSortingMethodBox() { return  sortingMethodBox; } 
     private final JButton deleteButton = new JButton("Delete");
     /** @return The delete JButton @author 19076935 */
     public JButton getDeleteButton() { return deleteButton; }
@@ -152,9 +153,9 @@ public class Application extends JFrame {
         gbc_sortLabel.gridx = 0;
         gbc_sortLabel.gridy = 0;
         sortingPanel.add(sortLabel, gbc_sortLabel);
-        sortingMethod.addActionListener(new ActionListener() {
+        sortingMethodBox.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		SortingMethod method = (SortingMethod)sortingMethod.getSelectedItem();
+        		SortingMethod method = (SortingMethod)sortingMethodBox.getSelectedItem();
         		if (method.requiresData()) {
         			Library fLib = library.filter(true);
         			itemsCulledLabel.setText("  Games missing data have been hidden");
@@ -165,11 +166,10 @@ public class Application extends JFrame {
         			itemsCulledLabel.setText("");
             		drawGames(library);
         		}
-        		
         	}
         });
         
-        sortingMethod.setModel(new DefaultComboBoxModel<SortingMethod>(SortingMethod.values()));
+        sortingMethodBox.setModel(new DefaultComboBoxModel<SortingMethod>(SortingMethod.values()));
                 
         // God I hate how much code GridBagLayout makes //
         
@@ -179,7 +179,7 @@ public class Application extends JFrame {
         gbc_sortingMethod.anchor = GridBagConstraints.NORTHWEST;
         gbc_sortingMethod.gridx = 1;
         gbc_sortingMethod.gridy = 0;
-        sortingPanel.add(sortingMethod, gbc_sortingMethod);
+        sortingPanel.add(sortingMethodBox, gbc_sortingMethod);
         
         GridBagConstraints gbc_filterLabel = new GridBagConstraints();
         gbc_filterLabel.anchor = GridBagConstraints.EAST;
@@ -260,13 +260,12 @@ public class Application extends JFrame {
         
         // Initializing the library on startup //
         try {
-            library = new Library("data/db.bin");
+            library = new Library();
             library.read();
         } catch (Exception e) { new Log(e.getMessage()); }
 
         // Writing the library to the UI //
         library.sort(SortingMethod.NAME);
-        System.out.println(library);
         drawGames(library);
         
         controls.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -284,14 +283,14 @@ public class Application extends JFrame {
         GridBagConstraints gbc_nameLabel = new GridBagConstraints();
         gbc_nameLabel.insets = new Insets(0, 0, 5, 5);
         gbc_nameLabel.anchor = GridBagConstraints.NORTHEAST;
-        gbc_nameLabel.gridx = 1;
+        gbc_nameLabel.gridx = 0;
         gbc_nameLabel.gridy = 0;
         fieldsPanel.add(nameLabel, gbc_nameLabel);
         
         GridBagConstraints gbc_nameField = new GridBagConstraints();
         gbc_nameField.insets = new Insets(0, 0, 5, 0);
         gbc_nameField.fill = GridBagConstraints.HORIZONTAL;
-        gbc_nameField.gridx = 2;
+        gbc_nameField.gridx = 1;
         gbc_nameField.gridy = 0;
         fieldsPanel.add(nameField, gbc_nameField);
     	nameField.setColumns(10);
@@ -307,7 +306,7 @@ public class Application extends JFrame {
         GridBagConstraints gbc_priceLabel = new GridBagConstraints();
         gbc_priceLabel.anchor = GridBagConstraints.EAST;
         gbc_priceLabel.insets = new Insets(0, 0, 5, 5);
-        gbc_priceLabel.gridx = 1;
+        gbc_priceLabel.gridx = 0;
         gbc_priceLabel.gridy = 1;
         fieldsPanel.add(priceLabel, gbc_priceLabel);
         
@@ -315,7 +314,7 @@ public class Application extends JFrame {
         GridBagConstraints gbc_priceField = new GridBagConstraints();
         gbc_priceField.insets = new Insets(0, 0, 5, 0);
         gbc_priceField.fill = GridBagConstraints.HORIZONTAL;
-        gbc_priceField.gridx = 2;
+        gbc_priceField.gridx = 1;
         gbc_priceField.gridy = 1;
         fieldsPanel.add(priceField, gbc_priceField);
         priceField.setColumns(10);
@@ -331,14 +330,14 @@ public class Application extends JFrame {
         GridBagConstraints gbc_platformLabel = new GridBagConstraints();
         gbc_platformLabel.anchor = GridBagConstraints.EAST;
         gbc_platformLabel.insets = new Insets(0, 0, 5, 5);
-        gbc_platformLabel.gridx = 1;
+        gbc_platformLabel.gridx = 0;
         gbc_platformLabel.gridy = 2;
         fieldsPanel.add(platformLabel, gbc_platformLabel);
         
         GridBagConstraints gbc_platformField = new GridBagConstraints();
         gbc_platformField.insets = new Insets(0, 0, 5, 0);
         gbc_platformField.fill = GridBagConstraints.HORIZONTAL;
-        gbc_platformField.gridx = 2;
+        gbc_platformField.gridx = 1;
         gbc_platformField.gridy = 2;
         platformField.setModel(new DefaultComboBoxModel<Platform>(Platform.values()));
         fieldsPanel.add(platformField, gbc_platformField);
@@ -346,16 +345,15 @@ public class Application extends JFrame {
         GridBagConstraints gbc_pruchaseLabel = new GridBagConstraints();
         gbc_pruchaseLabel.anchor = GridBagConstraints.EAST;
         gbc_pruchaseLabel.insets = new Insets(0, 0, 5, 5);
-        gbc_pruchaseLabel.gridx = 1;
+        gbc_pruchaseLabel.gridx = 0;
         gbc_pruchaseLabel.gridy = 3;
         fieldsPanel.add(pruchaseLabel, gbc_pruchaseLabel);
         
         GridBagConstraints gbc_datePanel = new GridBagConstraints();
-        gbc_datePanel.anchor = GridBagConstraints.WEST;
+        gbc_datePanel.fill = GridBagConstraints.HORIZONTAL;
         gbc_datePanel.insets = new Insets(0, 0, 5, 0);
-        gbc_datePanel.gridx = 2;
+        gbc_datePanel.gridx = 1;
         gbc_datePanel.gridy = 3;
-        FlowLayout flowLayout = (FlowLayout) datePanel.getLayout();
         fieldsPanel.add(datePanel, gbc_datePanel);
         
         dayField.addKeyListener(new KeyAdapter() {
@@ -366,7 +364,8 @@ public class Application extends JFrame {
     			checkAllFields(); 
     		}
     	});
-        dayField.setColumns(10);
+        datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.X_AXIS));
+        dayField.setColumns(5);
         dayField.setInputVerifier(new DayVerifier(monthField));
         datePanel.add(dayField);
         
@@ -388,7 +387,7 @@ public class Application extends JFrame {
         GridBagConstraints gbc_ratingLabel = new GridBagConstraints();
         gbc_ratingLabel.anchor = GridBagConstraints.EAST;
         gbc_ratingLabel.insets = new Insets(0, 0, 5, 5);
-        gbc_ratingLabel.gridx = 1;
+        gbc_ratingLabel.gridx = 0;
         gbc_ratingLabel.gridy = 4;
         fieldsPanel.add(ratingLabel, gbc_ratingLabel);
         
@@ -396,7 +395,7 @@ public class Application extends JFrame {
         gbc_ratingPanel.anchor = GridBagConstraints.WEST;
         gbc_ratingPanel.insets = new Insets(0, 0, 5, 0);
         gbc_ratingPanel.fill = GridBagConstraints.VERTICAL;
-        gbc_ratingPanel.gridx = 2;
+        gbc_ratingPanel.gridx = 1;
         gbc_ratingPanel.gridy = 4;
         fieldsPanel.add(ratingPanel, gbc_ratingPanel);
         
@@ -413,14 +412,14 @@ public class Application extends JFrame {
         GridBagConstraints gbc_physicalLabel = new GridBagConstraints();
         gbc_physicalLabel.anchor = GridBagConstraints.EAST;
         gbc_physicalLabel.insets = new Insets(0, 0, 5, 5);
-        gbc_physicalLabel.gridx = 1;
+        gbc_physicalLabel.gridx = 0;
         gbc_physicalLabel.gridy = 5;
         fieldsPanel.add(physicalLabel, gbc_physicalLabel);
         
         GridBagConstraints gbc_physicalField = new GridBagConstraints();
         gbc_physicalField.insets = new Insets(0, 0, 5, 0);
         gbc_physicalField.anchor = GridBagConstraints.WEST;
-        gbc_physicalField.gridx = 2;
+        gbc_physicalField.gridx = 1;
         gbc_physicalField.gridy = 5;
         fieldsPanel.add(physicalField, gbc_physicalField);
         GridBagConstraints gbc_addButton = new GridBagConstraints();
@@ -462,9 +461,6 @@ public class Application extends JFrame {
         					library.update(selectedGame, addition);
         					selectionListener.deselect();
         				}
-        				
-                		library.sort((SortingMethod)sortingMethod.getSelectedItem());
-                		drawGames(library);
         			}
         		}).start();
         	}
@@ -491,6 +487,24 @@ public class Application extends JFrame {
         gbc_progressBar.gridx = 1;
         gbc_progressBar.gridy = 0;
         progressPanel.add(progressBar, gbc_progressBar);
+        
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+            	State config = new State((SortingMethod)sortingMethodBox.getSelectedItem(), nameField.getText(), priceField.getText(), dayField.getText(),
+            							yearField.getText(), (Platform)platformField.getSelectedItem(), (Month)monthField.getSelectedItem(), 
+            							ratingListener.getValue(), physicalField.isSelected(), addButton.isEnabled());
+            	try { 
+            		library.write();
+            		config.write(); 
+            	} catch (IOException ex) { new Log(ex.getMessage()); }
+                System.exit(0);
+            }
+        });
+        
+        State config = new State();
+        try { config.read(); }
+        catch (IOException e) { new Log(e.getMessage()); }
+        config.load(this);
     }
     
     /** Method that checks all the input fields and enables the add button if they have all been validated
@@ -512,10 +526,21 @@ public class Application extends JFrame {
      * @param library The library to draw to the screen
      * @author 19076935 */
     public void drawGames(Library library) {
+    	SortingMethod method = (SortingMethod)sortingMethodBox.getSelectedItem();
+    	Library drawing; 
+    	if (method.requiresData()) {
+			drawing = library.filter(true);
+			itemsCulledLabel.setText("  Games missing data have been hidden");
+			drawing.sort(method);
+		} else {
+			drawing = library;
+			drawing.sort(method);
+			itemsCulledLabel.setText("");
+		}
     	games.removeAll();
     	gamePanels.clear();
     	int i = 0;
-        for (Game game : library) {
+        for (Game game : drawing) {
             GridBagConstraints constraint = new GridBagConstraints();
             constraint.gridx = 0;
             constraint.gridy = i;
@@ -545,7 +570,6 @@ public class Application extends JFrame {
         
         frame.setContentPane(frame.getPanel());
         frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension((int)(Toolkit.getDefaultToolkit().getScreenSize().width / 1.2),
                                              (int)(Toolkit.getDefaultToolkit().getScreenSize().height / 1.2)));
         frame.pack();
@@ -557,18 +581,140 @@ public class Application extends JFrame {
     * @param args Console arguments
     * @author 19076935 */
     public static void consoleMain(String[] args) {
-        Game game1 = new Game("Half-Life", 30.00f, Platform.PC, new Date(), 5, true);
-
-        //Game game2 = new Game("SuperHot", 20.00f, Platform.PS4, new Date());
-        //Game game3 = new Game("SuperHot", 10.00f, Platform.GC, new Date());
-        //Game game4 = new Game("SuperHot", 60.00f, Platform.PC, new Date());
-        //Game game5 = new Game("SuperHot", 100.00f, Platform.THREEDS, new Date());
-
-        //Library db = new Library("game.bin");
-
-        //db.read();
-
-        //System.out.println(db);
+    	State config = new State();
+    	try { config.read(); }
+    	catch (IOException e) { new Log(e.getMessage()); }
+    	
+    	SortingMethod sortMethod = config.getSortingMethod();
+    	
+    	System.out.println("-------------------------");
+    	System.out.println("-- Welcome to the NAME --");
+    	System.out.println("------------------------- ");
+    	
+    	Library library = new Library();
+    	try { library.read(); } 
+    	catch (IOException e) { new Log(e.getMessage()); }
+    	
+        Scanner scanner = new Scanner(System.in);
+        String input = "";
+        // Main application loop
+        do { 
+        	System.out.println("");
+        	System.out.println(library.stringSorted(sortMethod));
+        	System.out.println("");
+        	
+        	System.out.print("(Add) Add a new game\n(Sort) Sort your collection\n(Delete) Delete a game\n(Update) Update a game\n(Exit) Exit\n\n> ");
+        	input = scanner.nextLine();
+        	switch(input.toLowerCase()) {
+        	case "a":
+        	case "add":
+        		addGameConsole(library, scanner);
+        		break;
+        		
+        	case "s":
+        	case "sort":
+        		sortMethod = getSortingMethodFromInput(scanner);
+        		break;
+        		
+        	case "d":
+        	case "del":
+        	case "delete":
+        		removeGameConsole(library, scanner);
+        		break;
+        		
+        	case "u":
+        	case "up":
+        	case "update":
+        		updateGameConsole(library, scanner);
+        		break;
+        	}
+        	
+        } while(!input.toLowerCase().equals("exit"));
+        
+        System.out.println("\nExiting...");
+        try { 
+        	library.write(); 
+        	config.setSortingMethod(sortMethod);
+        	config.write();
+        }
+        catch (IOException e) { new Log(e.getMessage()); }
+        scanner.close();
         System.exit(0);
+    }
+    
+    public static void addGameConsole(Library library, Scanner scanner) {
+    	Game game = new Game(scanner);
+    	library.add(game);
+    }
+    
+    public static void removeGameConsole(Library library, Scanner scanner) {
+    	if (library.size() == 0) { System.out.println("No games to delete"); return; }
+    	int i = 0;
+    	for (Game game : library) {
+    		System.out.println(i+1 + ") " + game.getTitle());
+    		++i;
+    	}
+    	int input = 0;
+    	do {
+    		System.out.print("Number to Delete > ");
+    		try {
+    			input = scanner.nextInt();
+    			if (input > library.size() || input < 1) { throw new NumberFormatException(); }
+    		} catch (Exception e) { 
+    			System.err.println("\nNot a valid index!\n");
+    			scanner.next();
+    			}
+    	} while (input == 0); 
+    	
+    	library.remove(library.atIndex(input - 1));
+    }
+    
+    public static void updateGameConsole(Library library, Scanner scanner) {
+    	if (library.size() == 0) { System.out.println("No games to update"); return; }
+    	int i = 0;
+    	for (Game game : library) {
+    		System.out.println(i+1 + ") " + game.getTitle());
+    		++i;
+    	}
+    	int input = 0;
+    	do {
+    		System.out.print("Number to Update > ");
+    		try {
+    			input = scanner.nextInt();
+    			if (input > library.size() || input < 1) { throw new NumberFormatException(); }
+    		} catch (Exception e) { 
+    			System.err.println("\nNot a valid index!\n");
+    			scanner.next();
+    			}
+    	} while (input == 0); 
+    	
+    	scanner.nextLine();
+    	Game update = new Game(scanner);
+    	library.update(library.atIndex(input - 1), update);
+    }
+    
+    public static SortingMethod getSortingMethodFromInput(Scanner scanner) {
+    	SortingMethod method = null;
+    	do {
+    		System.out.print("Sorting Method (Enter ? to see sorting methods and corresponding values) > ");
+    		String input = scanner.nextLine();
+    		if (input.equalsIgnoreCase("?")) {
+    			int i = 0;
+    			for (SortingMethod sm : SortingMethod.values()) {
+    				System.out.println(i +  (i < 10 ? " " : "") + " | " + sm);
+    				++i;
+    			}
+    		} else {
+    			try {
+    				int index = Integer.parseInt(input);
+    				if (index > 10) { throw new NumberFormatException(); }
+    				
+    				return SortingMethod.fromIndex(index);
+    			} catch (Exception e) { 
+    				System.err.println("\nNot a valid sorting method index!\n");
+    			}
+    		}
+    	} while (method == null);
+    	return null;
     }
 }
