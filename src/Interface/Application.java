@@ -108,18 +108,19 @@ public class Application extends JFrame {
 
     /** Constructor of the application object. This instantiates the main runtime thread 
      * @author 19076935    */
-    public Application() {
-    	filterField.setColumns(10);
+    public Application(String name) {
+    	super(name);
+    	
         panel.setLayout(new GridLayout());
         
         // Creating the menu bar and actions
         JMenu fileMenu = new JMenu("File");
-        JMenu editMenu = new JMenu("Edit");
         JMenuItem saveItem = new JMenuItem("Save");
+        JMenuItem consoleItem = new JMenuItem("Run Console (Disables UI)");
         fileMenu.add(saveItem);
+        fileMenu.add(consoleItem);
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(fileMenu);
-        menuBar.add(editMenu);
         this.setJMenuBar(menuBar);
         
         // Creating the base UI
@@ -194,6 +195,7 @@ public class Application extends JFrame {
         gbc_filterField.gridx = 1;
         gbc_filterField.gridy = 1;
         sortingPanel.add(filterField, gbc_filterField);
+        filterField.setColumns(10);
         
         GridBagConstraints gbc_itemsCulledLabel = new GridBagConstraints();
         gbc_itemsCulledLabel.gridheight = 2;
@@ -501,6 +503,22 @@ public class Application extends JFrame {
             }
         });
         
+        saveItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try { library.write(); }
+				catch (IOException ex) { new Log(ex.getMessage()); }
+			}
+        });
+        
+        consoleItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				consoleMain(new String[1]);
+			}
+        });
+        
         State config = new State();
         try { config.read(); }
         catch (IOException e) { new Log(e.getMessage()); }
@@ -566,7 +584,7 @@ public class Application extends JFrame {
         try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
         catch (Exception e) { e.printStackTrace(); }
         
-        Application frame = new Application();
+        Application frame = new Application("Game Collector");
         
         frame.setContentPane(frame.getPanel());
         frame.setResizable(false);
@@ -587,9 +605,9 @@ public class Application extends JFrame {
     	
     	SortingMethod sortMethod = config.getSortingMethod();
     	
-    	System.out.println("-------------------------");
-    	System.out.println("-- Welcome to the NAME --");
-    	System.out.println("------------------------- ");
+    	System.out.println("-----------------------------------");
+    	System.out.println("-- Welcome to the GAME COLLECTOR --");
+    	System.out.println("----------------------------------- ");
     	
     	Library library = new Library();
     	try { library.read(); } 
@@ -603,7 +621,7 @@ public class Application extends JFrame {
         	System.out.println(library.stringSorted(sortMethod));
         	System.out.println("");
         	
-        	System.out.print("(Add) Add a new game\n(Sort) Sort your collection\n(Delete) Delete a game\n(Update) Update a game\n(Exit) Exit\n\n> ");
+        	System.out.print("(Add) Add a new game\n(Sort) Sort your collection\n(Filter) Search your collection\n(Delete) Delete a game\n(Update) Update a game\n(Exit) Exit\n\n> ");
         	input = scanner.nextLine();
         	switch(input.toLowerCase()) {
         	case "a":
@@ -627,6 +645,12 @@ public class Application extends JFrame {
         	case "update":
         		updateGameConsole(library, scanner);
         		break;
+        		
+        	case "f":
+        	case "filt":
+        	case "filter":
+        		searchConsole(library, sortMethod,  scanner);
+        		break;
         	}
         	
         } while(!input.toLowerCase().equals("exit"));
@@ -645,6 +669,15 @@ public class Application extends JFrame {
     public static void addGameConsole(Library library, Scanner scanner) {
     	Game game = new Game(scanner);
     	library.add(game);
+    }
+    
+    public static void searchConsole(Library library, SortingMethod sortMethod,  Scanner scanner) {
+    	System.out.print("Search Term > ");
+    	String input = scanner.nextLine();
+    	Library filtered = library.filter(input);
+    	System.out.println(filtered.stringSorted(sortMethod));
+    	System.out.print("Press Enter to continue...");
+    	scanner.nextLine();
     }
     
     public static void removeGameConsole(Library library, Scanner scanner) {
