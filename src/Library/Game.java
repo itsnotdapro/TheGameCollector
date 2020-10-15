@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 import javax.swing.JProgressBar;
 
-public class Game extends InfoRetrieval implements Serializable {
+public class Game extends InfoRetrieval {
     private String title;
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }

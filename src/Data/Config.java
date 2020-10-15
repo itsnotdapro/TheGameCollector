@@ -19,6 +19,7 @@ public interface Config extends Serializable {
 	public void read() throws IOException;
 	
 	/** Method to clear an object's associated file
+	 * @return If the data was successfully cleared
 	 * @author 19076935 */
 	public boolean clear();
 }
