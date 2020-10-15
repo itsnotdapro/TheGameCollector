@@ -1,6 +1,5 @@
 package Interface;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import Data.Month;
@@ -110,6 +109,7 @@ public class Application extends JFrame {
     private final JLabel titleLabel = new JLabel("The GAME COLLECTOR");
 
     /** Constructor of the application object. This instantiates the main runtime thread 
+     * @param name The name of the JFrame as viewed in the top left corner of the window
      * @author 19076935    */
     public Application(String name) {
     	super(name);
@@ -682,6 +682,11 @@ public class Application extends JFrame {
     	library.add(game);
     }
     
+    /** Method to print the searched results of the console
+     * @param library The library to search through
+     * @param sortMethod The method being used to sort
+     * @param scanner The main application thread's scanner
+     * @author 19076935 */
     public static void searchConsole(Library library, SortingMethod sortMethod,  Scanner scanner) {
     	System.out.print("Search Term > ");
     	String input = scanner.nextLine();
@@ -691,6 +696,10 @@ public class Application extends JFrame {
     	scanner.nextLine();
     }
     
+    /** Method to remove a game from the library via the console
+     * @param library The library to delete a game from
+     * @param scanner The main application thread's scanner
+     * @author 19076935 */
     public static void removeGameConsole(Library library, Scanner scanner) {
     	if (library.size() == 0) { System.out.println("No games to delete"); return; }
     	int i = 0;
@@ -713,6 +722,10 @@ public class Application extends JFrame {
     	library.remove(library.atIndex(input - 1));
     }
     
+    /** Updates a game via the console
+     * @param library The library to delete a game from
+     * @param scanner The main application thread's scanner
+     * @author 19076935 */
     public static void updateGameConsole(Library library, Scanner scanner) {
     	if (library.size() == 0) { System.out.println("No games to update"); return; }
     	int i = 0;
@@ -737,6 +750,10 @@ public class Application extends JFrame {
     	library.update(library.atIndex(input - 1), update);
     }
     
+    /** Gets a sorting method based on console input
+     * @param scanner The main application thread's scanner
+     * @return The sorting method selected
+     * @author 19076935 */
     public static SortingMethod getSortingMethodFromInput(Scanner scanner) {
     	SortingMethod method = null;
     	do {
