@@ -13,7 +13,8 @@ The UI will be powered by Java's Swing framework, as it is the easiest way to co
 
 As this project is a university assignment, and so all code must be written by me, there are some functions that would normally be taken from libraries, such as a JSON parser, that will have to be hand developed instead
 
-## Project Structure (UML)
+## Project Structure
+The JavaDoc for this project can be found [here](https://itsnotdapro.github.io/TheGameCollector/), and below is the UML structure of the project (only including classes developed by me)
 
 ![uml](docs/Diagram.png)
 
