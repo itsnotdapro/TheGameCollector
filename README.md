@@ -4,6 +4,8 @@
 
 ---
 
+> The lastest release of the project can be found [here](https://github.com/itsnotdapro/TheGameCollector/releases)
+
 ## Project Outline
 This project will be a games collection catalouge. It will allow you to store, edit and remove games of various platforms, genres and purchase dates. It will display a list of titles inputted by the user, and sorted using various methods. The user can rate games in their collection, at that rating can be compared to other games. 
 
