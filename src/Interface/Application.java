@@ -260,6 +260,7 @@ public class Application extends JFrame {
         			gamePanels.remove(selectionListener.getSelectedPanel());
         			drawGames(library);
         			selectedGame = null;
+        			selectionListener.deselect();
         		}
         	}
         });
@@ -472,6 +473,7 @@ public class Application extends JFrame {
         					library.update(selectedGame, addition);
         					selectionListener.deselect();
         				}
+        				drawGames(library);
         			}
         		}).start();
         	}
