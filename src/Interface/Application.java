@@ -580,8 +580,7 @@ public class Application extends JFrame {
             ++i;
         }
         
-        games.revalidate();
-        games.repaint();
+        this.pack();
     }
 
     /** Program launch point

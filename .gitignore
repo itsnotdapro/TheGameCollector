@@ -30,3 +30,11 @@ hs_err_pid*
 *.iml
 *.classpath
 /bin
+
+# Program files
+*.db
+*.conf
+*.jpg
+/data/logs
+
+!favicon.jpg

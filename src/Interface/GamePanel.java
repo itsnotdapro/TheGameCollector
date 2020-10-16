@@ -73,7 +73,7 @@ public class GamePanel extends JPanel {
         	JLabel genres = new JLabel(genreText);
         	details.add(new JLabel("Developed by: " + game.getResult("developers")));
         	details.add(genres);
-        	details.add(new JLabel("Metacritic Score: " + game.getResult("score")));
+        	details.add(new JLabel("Metacritic Score: " + game.getResult("score")));        	
         }
         
         this.add(details); 
