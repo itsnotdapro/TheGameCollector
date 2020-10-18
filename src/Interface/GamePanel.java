@@ -43,7 +43,7 @@ public class GamePanel extends JPanel {
         gamePrice.setText("Price: $" + game.getPriceAsString());
         gamePlatform.setText("Platform: " + game.getPlatform());
         gameRating.setText("Rating: " + game.getRating() + "/10");
-        gamePurchase.setText("Purchase Date: " + Game.getDateAsString(game.getPurchase(), "dd, MM yyyy"));
+        gamePurchase.setText("Purchase Date: " + Game.getDateAsString(game.getPurchase(), "d MMMM, yyyy"));
         
         details.setLayout(new BoxLayout(details, BoxLayout.Y_AXIS));
         details.add(gameTitle);
@@ -63,7 +63,7 @@ public class GamePanel extends JPanel {
             this.add(boxArtLabel);
             
         	details.add(new JLabel(" "));
-        	details.add(new JLabel("Release Date: " + Game.getDateAsString(game.getRelease(), "dd, MM yyyy")));
+        	details.add(new JLabel("Release Date: " + Game.getDateAsString(game.getRelease(), "d MMMM, yyyy")));
         	String genreText = "Genres: ";
         	int i = 0;
         	for (String genre : game.getGenres()) {

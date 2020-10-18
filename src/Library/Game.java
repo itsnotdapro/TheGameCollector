@@ -114,9 +114,12 @@ public class Game extends InfoRetrieval implements Serializable {
      * @param scanner The main application thread's scanner
      * @author 19076935 */
     public Game(Scanner scanner) {
-		System.out.print("\nName > ");
-		title = scanner.next();
-		scanner.nextLine();
+    	do {
+			System.out.print("Name > ");
+			title = scanner.nextLine();
+		
+			if (title == "") { System.err.println("\nNot a valid name!\n");} 
+		} while (title == "");
 		do {
 			try { 
 				System.out.print("Price > ");
@@ -251,7 +254,7 @@ public class Game extends InfoRetrieval implements Serializable {
     public static int[] getDateFromString(String date) throws InvalidDateFormatException {
     	int[] output = new int[3];
     	try {
-    		output[0] = Integer.parseInt(date.substring(0, 1));
+    		output[0] = Integer.parseInt(date.substring(0, 2));
     		output[1] = Integer.parseInt(date.substring(3, 5));
     		output[2] = Integer.parseInt(date.substring(6, 10));
     	} catch (Exception e) { throw new InvalidDateFormatException(); }
@@ -263,7 +266,7 @@ public class Game extends InfoRetrieval implements Serializable {
     	String out = "";
     	out += title + ":\n\tPrice: $" + getPriceAsString() +
     		            "\n\tPlatform: " + platform + 
-    		            "\n\tPurchase Date: " + getDateAsString(purchased, "dd, MM yyyy") + 
+    		            "\n\tPurchase Date: " + getDateAsString(purchased, "d MMMM, yyyy") + 
     		            "\n\tRating: " + rating  + "/10" +
     		            "\n\tPhysical Copy: " + (physical ? "Yes" : "No");
     	if (!APIResults.isEmpty()) {
@@ -274,7 +277,7 @@ public class Game extends InfoRetrieval implements Serializable {
         		++i;
         	}
         	
-    		out += "\n\n\tRelease Date: " + getDateAsString(release, "dd, MM yyyy") + 
+    		out += "\n\n\tRelease Date: " + getDateAsString(release, "dd MMMM, yyyy") + 
     			   "\n\tDeveloper: " + getResult("developers") + 
     			   "\n\t" + genreText + 
     			   "\n\tMetacritic Score: " + getResult("score");

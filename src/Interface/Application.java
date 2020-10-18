@@ -713,11 +713,14 @@ public class Application extends JFrame {
     		System.out.print("Number to Delete > ");
     		try {
     			input = scanner.nextInt();
-    			if (input > library.size() || input < 1) { throw new NumberFormatException(); }
+    			if (input > library.size() || input < 1) { 
+    				input = 0;
+    				throw new NumberFormatException();
+    				}
     		} catch (Exception e) { 
     			System.err.println("\nNot a valid index!\n");
-    			scanner.next();
-    			}
+    			scanner.nextLine();
+    		}
     	} while (input == 0); 
     	
     	library.remove(library.atIndex(input - 1));
@@ -739,7 +742,10 @@ public class Application extends JFrame {
     		System.out.print("Number to Update > ");
     		try {
     			input = scanner.nextInt();
-    			if (input > library.size() || input < 1) { throw new NumberFormatException(); }
+    			if (input > library.size() || input < 1) {
+    				input = 0;
+    				throw new NumberFormatException();
+    				}
     		} catch (Exception e) { 
     			System.err.println("\nNot a valid index!\n");
     			scanner.next();
