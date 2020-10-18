@@ -1,7 +1,6 @@
 package Interface.Validation;
 
 import java.awt.Color;
-import java.awt.Font;
 
 import javax.swing.InputVerifier;
 import javax.swing.JComboBox;

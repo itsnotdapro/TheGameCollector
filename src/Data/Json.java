@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 /** Class used for storing and parsing the JSON metadata retrieved by the API 
  * @author 19076935 */
+@SuppressWarnings("serial")
 public class Json implements Serializable {
 	private HashMap<String, Object> data;
 	
@@ -30,7 +31,9 @@ public class Json implements Serializable {
 	/** Checks whether the object has data
 	* @return Boolean state of the amount of data in the object
 	* @author 19076935 */
-	public boolean isEmpty() { return data.isEmpty(); }
+	public boolean isEmpty() { 
+		if (data.isEmpty()) { return true; }
+		return (data.get("results") == null ? false : true); }
 	
 	/** Removes the duplicates from a given ArrayList of strings
 	 * @param array The array to remove duplicates from

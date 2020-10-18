@@ -12,10 +12,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
-import java.text.SimpleDateFormat;
 
 /** An object that represents a game drawn to the UI
  * @author 19076935 */
+@SuppressWarnings("serial")
 public class GamePanel extends JPanel {
     private final Game game;
     /** @return The game the panel is displaying @author 19076935 */
@@ -37,13 +37,13 @@ public class GamePanel extends JPanel {
         addMouseListener(listener);
         
         setTitleBorder();
-        
+
         gameTitle.setText(game.getTitle());
         gameTitle.setFont(new Font("Tahoma", Font.BOLD, 20));
         gamePrice.setText("Price: $" + game.getPriceAsString());
         gamePlatform.setText("Platform: " + game.getPlatform());
         gameRating.setText("Rating: " + game.getRating() + "/10");
-        gamePurchase.setText("Purchase Date: " + Game.getDateAsString(game.getPurchase()));
+        gamePurchase.setText("Purchase Date: " + Game.getDateAsString(game.getPurchase(), "dd, MM yyyy"));
         
         details.setLayout(new BoxLayout(details, BoxLayout.Y_AXIS));
         details.add(gameTitle);
@@ -52,7 +52,7 @@ public class GamePanel extends JPanel {
         details.add(gameRating);
         details.add(gamePurchase);
         
-        if (game.hasData()) {
+        if (!game.getResults().isEmpty()) {
         	BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
             try { image = getImage(); }
             catch (IOException e) { new Log(e.getMessage()); }
@@ -63,7 +63,7 @@ public class GamePanel extends JPanel {
             this.add(boxArtLabel);
             
         	details.add(new JLabel(" "));
-        	details.add(new JLabel("Release Date: " + Game.getDateAsString(game.getRelease())));
+        	details.add(new JLabel("Release Date: " + Game.getDateAsString(game.getRelease(), "dd, MM yyyy")));
         	String genreText = "Genres: ";
         	int i = 0;
         	for (String genre : game.getGenres()) {
@@ -77,6 +77,7 @@ public class GamePanel extends JPanel {
         }
         
         this.add(details); 
+        
     }
     
     /** Sets the border when the panel is not selected
@@ -103,7 +104,7 @@ public class GamePanel extends JPanel {
      * @throws IOException If the FileIO fails for any reason
      * @author 19076935 */
     public BufferedImage getImage() throws IOException {
-    	if (!game.hasData()) { return ImageIO.read(new File("data/img/placeholder.jpg")); }
+    	if (game.getResults().isEmpty()) { return ImageIO.read(new File("data/img/placeholder.jpg")); }
         File imageFile = new File("data/img/" + game.getTitle().replace(":", "") + "-" + game.getPlatform() + ".jpg");
         // Get the image from a HTTP request if it does not exist
         if (!imageFile.exists()) {

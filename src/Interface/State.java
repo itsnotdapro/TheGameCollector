@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import javax.swing.JButton;
-
 import Data.Config;
 import Data.Month;
 import Exceptions.Log;
@@ -19,6 +17,7 @@ import Library.SortingMethod;
 
 /** Holds the current application state of the Swing UI, to be stored across sessions
  * @author 19076935 */
+@SuppressWarnings("serial")
 public class State implements Config {
 	private final String path = "data/.conf";
 	

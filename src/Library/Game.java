@@ -18,15 +18,23 @@ import java.util.Scanner;
 
 import javax.swing.JProgressBar;
 
-public class Game extends InfoRetrieval {
+/** An object that stores the information of a game
+ * @author 19076935 */
+@SuppressWarnings("serial")
+public class Game extends InfoRetrieval implements Serializable {
     private String title;
+    /** @return the title of the game @author 19076935 */
     public String getTitle() { return title; }
+    /** @param title The title to set @author 19076935 */
     public void setTitle(String title) { this.title = title; }
 
     // If there was arithmetic that needed to be done on the prices, it would be safer to store them as integers, but there isn't so it's not
     private float price;
+    /** @return the price of the game @author 19076935 */
     public float getPrice() { return price; }
+    /** @param price The price to set @author 19076935 */
     public void setPrice(float price) { this.price = price; }
+    /** @return the price as a string for UI use @author 19076935 */
     public String getPriceAsString() {
     	DecimalFormat df = new DecimalFormat();
     	df.setMinimumFractionDigits(2);
@@ -35,40 +43,64 @@ public class Game extends InfoRetrieval {
     }
 
     private Platform platform;
+    /** @return The platform of the game @author 19076935*/
     public Platform getPlatform() { return platform; }
+    /** @param platform The platform to set @author 19076935 */
     public void setPlatform(Platform platform) { this.platform = platform; }
     
     private boolean physical;
+    /** @return If the game is a physical release @author 19076935*/
     public boolean getPhysical() { return physical; }
+    /** @param physical Whether the game is physical or not @author 19076935 */
     public void setPhysical(boolean physical) { this.physical = physical; } 
     
     private Date purchased;
+    /** @return The purchase date of the game @author 19076935 */
     public Date getPurchase() { return purchased; }
+    /** @param purchased The purchase date of the game @author 19076935 */
     public void setPurchase(Date purchased) { this.purchased = purchased; }
 
     private Date release;
+    /** @return The release date of the game @author 19076935 */
     public Date getRelease() { return release; }
+    /** @param release The release date of the game @author 19076935 */
     public void setRelease(Date release) { this.release = release; }
     
     private int rating;
+    /** @return The rating of the game @author 19076935 */
     public int getRating() { return rating; }
+    /** @param rating The rating of the game @author 19076935 */
     public void setRating(int rating) { this.rating = rating; } 
-    
+   
     private ArrayList<String> genres;
+    /** @return the genres of the game @author 19076935 */
     public ArrayList<String> getGenres() { return this.genres; }
+    /** @param genres The genres of the game @author 19076935 */
     public void setGenres(ArrayList<String> genres) { this.genres = genres; }
 
     private Json APIData;
     private Json APIResults;
+    /** Gets an API result
+     * @param key The result to get
+     * @return The result from the key
+     * @author 19076935 */
     public Object getResult(String key) { return APIResults.get(key); }
+    /** @return The API results @author 19076935 */
     public Json getResults() { return APIResults; }
-    public boolean hasData() { return (APIResults == null) ? false : true; }
+    /** @param APIResults The API results @author 19076935 */
     public void setResults(Json APIResults) { 
-    	this.APIResults = APIResults; 
-    	parseData();
+    	this.APIResults = APIResults;   	
+    	if (!APIResults.isEmpty()) { parseData(); } 	
     }
 
-
+    /** Constructor when all parameters are known
+     * @param title The title of the game
+     * @param price The price of the game
+     * @param platform The platform of the game
+     * @param purchase The purchase date of the game
+     * @param rating the rating of the game
+     * @param physical Whether or not the game is a physical release
+     * @author 19076935 */
     public Game(String title, float price, Platform platform, Date purchase, int rating, boolean physical) {
         setTitle(title);
         setPrice(price);
@@ -78,9 +110,13 @@ public class Game extends InfoRetrieval {
         setPhysical(physical);
     }    
     
+    /** Constructor with console input
+     * @param scanner The main application thread's scanner
+     * @author 19076935 */
     public Game(Scanner scanner) {
 		System.out.print("\nName > ");
-		title = scanner.nextLine();
+		title = scanner.next();
+		scanner.nextLine();
 		do {
 			try { 
 				System.out.print("Price > ");
@@ -150,11 +186,18 @@ public class Game extends InfoRetrieval {
 		
 		System.out.println("\nGetting data...");
 		getData();
-		if (!hasData()) { System.err.println("No data found"); }
+		if (APIResults.isEmpty()) { System.err.println("No data found"); }
 	}
     
+    /** Gets the API data of the game (Used when no JProgressBar is present, as method requires a JProgressBar to function)
+     * @author 19076935 */
 	public void getData() { getData(new JProgressBar()); }
-    public void getData(JProgressBar bar) {    
+	
+	/** Gets the API data of the game
+	 * @param bar The UI's progress bar
+	 * @author 19076935 */
+    @SuppressWarnings("unchecked") // I designed it to be this way chill out my guy
+	public void getData(JProgressBar bar) {    
     	String urlTitle = title.replace(" ", "%20");
     	urlTitle = urlTitle.replace("&", "%26");
         url = "https://rapidapi.p.rapidapi.com/games/" + urlTitle + (getPlatform() == Platform.PC ? "" :  ("?platform=" + platform.getApiName()));
@@ -165,12 +208,15 @@ public class Game extends InfoRetrieval {
         	parseData();
         	
         } catch (NullPointerException e) {
-        	APIResults = null;
+        	APIResults = new Json("");
         	bar.setValue(100);
         }
     }
     
-    protected void parseData() {
+    /** Parses the game's API data, and sets the corresponding variables
+     * @author 19076935 */
+    @SuppressWarnings("unchecked") 
+	protected void parseData() {
     	if (!APIResults.isEmpty()) {
     		setTitle((String)APIResults.get("title"));
     		try {
@@ -184,14 +230,24 @@ public class Game extends InfoRetrieval {
 			}
     		setGenres((ArrayList<String>)APIResults.get("genres"));
     	} else {
-    		APIResults = null;
+    		APIResults = new Json("");
     	}
     }
     
-    public static String getDateAsString(Date date) {
-    	return new SimpleDateFormat("dd MMMM, yyyy").format(date);
+    /** Returns a date as a formatted string
+     * @param date The date to get as a string
+     * @param format The format of the date string
+     * @return The date formated based on the input string
+     * @author 19076935 */
+    public static String getDateAsString(Date date, String format) {
+    	return new SimpleDateFormat(format).format(date);
     }
     
+    /** Gets a date from a string
+     * @param date The string to get the date from
+     * @return The date as specified by the parameters
+     * @throws InvalidDateFormatException If the input string is not a valid date
+     * @author 19076935 */
     public static int[] getDateFromString(String date) throws InvalidDateFormatException {
     	int[] output = new int[3];
     	try {
@@ -207,10 +263,10 @@ public class Game extends InfoRetrieval {
     	String out = "";
     	out += title + ":\n\tPrice: $" + getPriceAsString() +
     		            "\n\tPlatform: " + platform + 
-    		            "\n\tPurchase Date: " + getDateAsString(purchased) + 
+    		            "\n\tPurchase Date: " + getDateAsString(purchased, "dd, MM yyyy") + 
     		            "\n\tRating: " + rating  + "/10" +
     		            "\n\tPhysical Copy: " + (physical ? "Yes" : "No");
-    	if (hasData()) {
+    	if (!APIResults.isEmpty()) {
     		String genreText = "Genres: ";
         	int i = 0;
         	for (String genre : getGenres()) {
@@ -218,7 +274,7 @@ public class Game extends InfoRetrieval {
         		++i;
         	}
         	
-    		out += "\n\n\tRelease Date: " + getDateAsString(release) + 
+    		out += "\n\n\tRelease Date: " + getDateAsString(release, "dd, MM yyyy") + 
     			   "\n\tDeveloper: " + getResult("developers") + 
     			   "\n\t" + genreText + 
     			   "\n\tMetacritic Score: " + getResult("score");

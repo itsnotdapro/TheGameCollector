@@ -2,8 +2,14 @@ package Library;
 
 import java.util.Comparator;
 
+/** Object that can return a Comparator object based on the SortingMethod input of it's get method
+ * @author 19076935 */
 public class Sort {
 
+	/** Gets a comparator object based on a specified SortingMethod enumeration
+	 * @param method The sorting method to use
+	 * @return A comparator object with the required overridden compare method
+	 * @author 19076935 */
 	public static Comparator<Game> get(SortingMethod method) {
 		switch(method) {
 		case NAME:
@@ -77,14 +83,14 @@ public class Sort {
 				}
 			};
 		
-	case METACRITIC:
-		return new Comparator<Game>() {
-			@Override
-			public int compare(Game g1, Game g2) {
-				return (int)g2.getResult("score") - (int)g1.getResult("score");
-			}
-		};
-	}
+		case METACRITIC:
+			return new Comparator<Game>() {
+				@Override
+				public int compare(Game g1, Game g2) {
+					return (int)g2.getResult("score") - (int)g1.getResult("score");
+				}
+			};
+		}
 		return null;
 	}
 }

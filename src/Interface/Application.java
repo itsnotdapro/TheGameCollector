@@ -29,7 +29,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import java.io.IOException;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -41,6 +40,7 @@ public class Application extends JFrame {
 	private Library library;
 	private ArrayList<GamePanel> gamePanels = new ArrayList<GamePanel>();
 	public ArrayList<GamePanel> getGamePanels() { return gamePanels; }
+	@SuppressWarnings("unused")
 	private GamePanel selectedGame = null;
 	
 	// All of the Swing components, and variables used for GUI control
@@ -580,6 +580,8 @@ public class Application extends JFrame {
             ++i;
         }
         
+        games.revalidate();
+        games.repaint();
         this.pack();
     }
 

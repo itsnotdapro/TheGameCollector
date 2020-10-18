@@ -2,6 +2,8 @@ package Library;
 
 import Exceptions.InvalidPlatformException;
 
+/** Enumerated type for the platform of a game
+ * @author 19076935 */
 public enum Platform {
     PC,
     PS ("PlayStation", "playstation"),
@@ -28,16 +30,29 @@ public enum Platform {
     private String apiName;
 
 
+    /** Constructs the Platform with the correct values
+     * @param name The name as displayed by the UI
+     * @param apiName the name for API queries
+     * @author 19076935 */
     private Platform(String name, String apiName) {
         this.name = name;
         this.apiName = apiName;
     }
 
+    /** Constructs the Platform with the correct values, given no input values
+     * @author 19076935 */
     private Platform() { this.apiName = "PC"; }
     
+    /** @return the name for API queries @author 19076935 */
     public String getApiName() { return apiName; }
+    /** @return The name of the Platform as coded @author 19076935 */
 	public String value() { return super.toString(); }
 	
+	/** Gets a platform based on an input string 
+	 * @param name The platform name
+	 * @return The specified Platform
+	 * @throws InvalidPlatformException If the input string was not a valid platform
+	 * @author 19076935 */
 	public static Platform getPlatformFromString(String name) throws InvalidPlatformException {
 		for (Platform platform : values()) {
 			if (name.toLowerCase().equals(platform.value().toLowerCase()) || name.toLowerCase().equals(platform.toString().toLowerCase())) {
