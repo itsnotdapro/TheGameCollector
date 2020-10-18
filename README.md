@@ -18,8 +18,9 @@ java -jar GameCollector.jar console
 ```
 
  
-Or through the file menu in the top corner as seen here: 
+Or through the file menu in the top corner as seen here (if started through the console, i.e. `java -jar GameCollector.jar`): 
 ![File menu](docs/RunConsoleExample.png)
+If the application is not run throught the console, this button will not function
 
 ---
 
