@@ -127,7 +127,7 @@ public class Library implements Config, Iterable<Game> {
     }
     
     /** Filters the library based on a whether it has API data
-     * @param term Whether the game has API data
+     * @param hasData Whether the game has API data
      * @return The filtered library
      * @author 19076935 */
     public Library filter(boolean hasData) {
