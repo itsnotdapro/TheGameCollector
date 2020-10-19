@@ -98,3 +98,5 @@ The JavaDoc for this project can be found [here](https://itsnotdapro.github.io/T
 > - Whitespace is consistent
 > - All naming is sensible and meaningful
 > - Comprehensively JavaDoc'd
+
+<img align="right" width="600" height="150" src="docs/wmark.png"></img>
