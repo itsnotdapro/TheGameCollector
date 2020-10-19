@@ -18,8 +18,9 @@ java -jar GameCollector.jar console
 ```
 
  
-Or through the file menu in the top corner as seen here: 
+Or through the file menu in the top corner as seen here (if started through the console, i.e. `java -jar GameCollector.jar`): 
 ![File menu](docs/RunConsoleExample.png)
+If the application is not run throught the console, this button will not function
 
 ---
 
@@ -34,6 +35,8 @@ As this project is a university assignment, and so all code must be written by m
 
 ## Project Structure
 The JavaDoc for this project can be found [here](https://itsnotdapro.github.io/TheGameCollector/). 
+
+![uml](docs/Diagram.png)
 
 ## Project Requirements
 
