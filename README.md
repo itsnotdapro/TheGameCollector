@@ -10,17 +10,42 @@
 
 ### Basic usage
 
+The application has 5 main functions, including:
+
+- Adding games to a collection
+- Removing games from a collection
+- Updating game entries from a collection
+- Sorting a collection
+- Searching through a collection
+
+The usage of the UI can be seen below: 
+
+![usage1](docs/sample1.png)
+![usage2](docs/sample2.png)
+
+When adding a game, if it's title and platform match that of one in the Metacritic database, it will retrieve additionaly info, including:
+- The game's box art
+- The release date
+- The developer
+- A list of the game's genres
+
+![usage3](docs/sample3.png)
+
+
 ### Running in console mode
 
- The Program has been written as a Swing UI application, but the console UI can be enabled either by running with the arguments: ```console``` or ```c```
+ The program has been written as a Swing UI application, but the console UI can be enabled either by running with the arguments: ```console``` or ```c```
 ```
 java -jar GameCollector.jar console
 ```
 
  
-Or through the file menu in the top corner as seen here (if started through the console, i.e. `java -jar GameCollector.jar`): 
+Or through the file menu in the top corner as seen here (if started through the console, i.e. `java -jar GameCollector.jar`).
+If the application is not run throught the console, this button will not function 
+
 ![File menu](docs/RunConsoleExample.png)
-If the application is not run throught the console, this button will not function
+
+
 
 ---
 
