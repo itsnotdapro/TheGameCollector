@@ -6,7 +6,7 @@
 ##### The lastest release of the project can be found [here](https://github.com/itsnotdapro/TheGameCollector/releases)
 ---
 
-<h2 align="center">Created by</h2>
+<h3 align="center">Created by</h3>
 
 ![logo](docs/logo.png)
 
