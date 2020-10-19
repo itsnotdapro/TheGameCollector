@@ -36,6 +36,8 @@ As this project is a university assignment, and so all code must be written by m
 ## Project Structure
 The JavaDoc for this project can be found [here](https://itsnotdapro.github.io/TheGameCollector/). 
 
+![uml](docs/Diagram.png)
+
 ## Project Requirements
 
 >#### Development Log
