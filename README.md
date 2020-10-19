@@ -6,9 +6,13 @@
 ##### The lastest release of the project can be found [here](https://github.com/itsnotdapro/TheGameCollector/releases)
 ---
 
+<h2 align="center">Created by</h2>
+
+![logo](docs/logo.png)
+
 # How to Use
 
-### Basic usage
+### Basic Usage
 
 The application has 5 main functions, including:
 
@@ -32,7 +36,7 @@ When adding a game, if it's title and platform match that of one in the Metacrit
 ![usage3](docs/sample3.png)
 
 
-### Running in console mode
+### Running in Console Mode
 
  The program has been written as a Swing UI application, but the console UI can be enabled either by running with the arguments: ```console``` or ```c```
 ```
