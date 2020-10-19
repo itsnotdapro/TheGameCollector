@@ -9,12 +9,6 @@ The UI will be powered by Java's Swing framework, as it is the easiest way to co
 
 As this project is a university assignment, and so all code must be written by me, there are some functions that would normally be taken from libraries, such as a JSON parser, that will have to be hand developed instead
 
-> The Program has been written as a Swing UI application, but the console UI can be enabled either by running with the arguments: ```console``` or ```c```
-> ``` java -jar GameCollector.jar console```
-> 
->Or through the file menu in the top corner as seen here: 
->![File menu](docs/RunConsoleExample.png)
-
 ---
 >#### Each new row is a new entry, i.e. a unique task being documented
 ## Design Phase
@@ -99,18 +93,18 @@ As this project is a university assignment, and so all code must be written by m
     <tr>
         <td style="text-align:center">2</td>
         <td>Added the ability to update games that have already been added to the library</td>
-        <td style="text-align:center"></td>
+        <td style="text-align:center">In order to update an entry in a ArrayList, you would either have to change every single value of the item in the list, or just replace it with another item. As I decided to just replace it, there was the issue that unneeded API calls where being made, as what was the purpose of making an API call that can take updwards of 2 seconds, when the price is the only field being updated. Therefore, I had to implent the ability to set the API results from other API results, so they could be copied over</td>
     </tr>
     <tr>
         <td style="text-align:center">3</td>
         <td>Added more sorting methods, and made more game API data displayed</td>
-        <td style="text-align:center"></td>
+        <td style="text-align:center">If a game does not have API data to display, trying to display that data doesn't end well. So there needed to be checks if the game has API data, if the sorting method being used requires API data, and to hide them if that is the case</td>
     </tr>
     <tr>
         <td rowspan="2">15/10/2020</td>
         <td style="text-align:center">2</td>
         <td>Added UI configurations, so that the UI state is stored over sessions. Also added console input</td>
-        <td style="text-align:center"></td>
+        <td style="text-align:center">The console input had some issues being implemented, but most had to do with needing custom exceptions to throw, as well as unparsed newline characters.</td>
     </tr>
     <tr>
         <td style="text-align:center">1/2</td>
@@ -132,18 +126,23 @@ As this project is a university assignment, and so all code must be written by m
     <tr>
         <td rowspan = "2">15/10/2020</td>
         <td style="text-align:center">1</td>
-        <td>Fixed extry sorting methods</td>
-        <td style="text-align:center"></td>
+        <td>Fixed extra sorting methods</td>
+        <td style="text-align:center">As the sorting methods and their associated enums are not intrinsically linked, when I added extra SortingMethod enums, there was the problem that many errors wold be spat out when those where selected from the ComboBox, so all SortingMethod enums NEED an associated case in the Sort.get method</td>
     </tr>
         <td style="text-align:center">3</td>
         <td>Changed class serialization structure</td>
-        <td style="text-align:center"></td>
+        <td style="text-align:center">As the only objects being stored where initally Librarys, the addition of another serializable class meant that it was much simpler to abstract the data serialization into the Config class, instead of defining it specifically in the Library class. This meant that the state of the UI could be abstracted from the Config class as well.</td>
     </tr>
     </tr>
-        <td>19/10/2020</td>
+        <td rowspan="2">19/10/2020</td>
         <td style="text-align:center">1</td>
         <td>Fixed API result not being null</td>
-        <td style="text-align:center"></td>
+        <td style="text-align:center">During the final testing, I found numerous issues. The most paramount was that the function that tested for whether the game had API data or not was not functional, which meant that any point in the codebase that called for API data was being called, even if a game didn't have data, which lead to several, such as data not being displayed or updated properly. Another issue that was found was that when the serialization structure was changed, the Game class was never changed back to implementing Serializable, which meant that every read and write operation would fail.</td>
+    </tr>
+    </tr>
+        <td style="text-align:center">1</td>
+        <td>Console input fixes</td>
+        <td style="text-align:center">There was a few points at which the scanner would call next() instead of nextLine(), causing entries with just newline characters to bug out the data entry by the user, and send garbled data to the removal and update functions.</td>
     </tr>
 </table>
 
