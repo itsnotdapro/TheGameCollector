@@ -99,4 +99,4 @@ The JavaDoc for this project can be found [here](https://itsnotdapro.github.io/T
 > - All naming is sensible and meaningful
 > - Comprehensively JavaDoc'd
 
-<img align="right" width="600" height="150" src="docs/wmark.png"></img>
+<img align="right" width="300" height="75" src="docs/wmark.png"></img>
