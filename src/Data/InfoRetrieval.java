@@ -27,6 +27,7 @@ public abstract class InfoRetrieval {
 
     /** Gets the information specified by the object's URL
 	 * @return The JSON string retrieved from the API
+     * @param bar The progress bar to update when info is being retrieved
 	 * @author 19076935 */
     protected String getInfo(JProgressBar bar) {
         try {
