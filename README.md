@@ -6,10 +6,6 @@
 ##### The lastest release of the project can be found [here](https://github.com/itsnotdapro/TheGameCollector/releases)
 ---
 
-<h3 align="center">Created by</h3>
-
-![logo](docs/logo.png)
-
 # How to Use
 
 ### Basic Usage
